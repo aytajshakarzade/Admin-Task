@@ -1,0 +1,38 @@
+﻿@model List<Projects>
+<table class="table table-bordered border-primary">
+    <table class="table">
+        <thead>
+            <tr> 
+                <th scope="col">#</th> 
+                <th scope="col">ImageUrl</th>
+                <th scope="col">Title</th> 
+                <th scope="col">Category</th>
+                <th scope="col">Deleted Status</th>
+            </tr> 
+         </thead>
+        <tbody>
+                @foreach (Projects projects in Model)
+                {
+                    <tr>
+                        <th scope="row">@projects.Id</th>
+                        <td><img style="width:80px; height:80px" src="~/assets/images/@projects.ImageUrl" alt="Alternate Text" /></td>
+                        <td>@projects.Title</td>
+                        <td>@projects.Category</td>
+
+                    @{
+                        if (projects.IsDeleted == false)
+                        {
+                            <td class="text-success">Silinmeyib</td>
+                        }
+                        else
+                        {
+                            <td class="text-danger">Silinib</td>
+                        }
+                    }
+                                           
+                    
+                    </tr>
+                }
+        </tbody>
+    </table>
+</table>
