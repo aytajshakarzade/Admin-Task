@@ -1,0 +1,21 @@
+﻿@model Projects
+<div>
+    <h1 class="text-primary">Add Slider</h1>
+    <form asp-controller="Projects" asp-action="Create" method="post">
+
+        <div class="mb-3">
+            <label for="title" class="form-label">Title</label>
+            <input asp-for="@Model.Title" class="form-control" id="title" placeholder="Enter title...">
+        </div>
+        <div class="mb-3">
+            <label for="category" class="form-label">Category</label>
+            <input asp-for="@Model.Category" class="form-control" id="category" placeholder="Enter category...">
+        </div>
+        <div class="mb-3">
+            <label for="imageUrl" class="form-label">ImageUrl</label>
+            <input asp-for="@Model.ImageUrl" class="form-control" id="imageUrl" placeholder="Enter url...">
+        </div>
+    
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+</div>

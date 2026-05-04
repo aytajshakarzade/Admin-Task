@@ -1,16 +1,21 @@
 ﻿@model List<Projects>
-<table class="table table-bordered border-primary">
-    <table class="table">
-        <thead>
-            <tr> 
-                <th scope="col">#</th> 
-                <th scope="col">ImageUrl</th>
-                <th scope="col">Title</th> 
-                <th scope="col">Category</th>
-                <th scope="col">Deleted Status</th>
-            </tr> 
-         </thead>
-        <tbody>
+<div>
+    <a asp-controller="Projects" asp-action="Create" class="btn btn-primary">Add New Project</a>
+
+    <table class="table table-bordered border-primary">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">ImageUrl</th>
+                    <th scope="col">Title</th>
+                    <th scope="col">Category</th>
+                    <th scope="col">Deleted Status</th>
+                    <th colspan="2">Actions</th>
+
+                </tr>
+            </thead>
+            <tbody>
                 @foreach (Projects projects in Model)
                 {
                     <tr>
@@ -19,20 +24,43 @@
                         <td>@projects.Title</td>
                         <td>@projects.Category</td>
 
-                    @{
-                        if (projects.IsDeleted == false)
-                        {
-                            <td class="text-success">Silinmeyib</td>
+                        @{
+                            if (projects.IsDeleted == false)
+                            {
+                                <td class="text-success">Silinmeyib</td>
+                            }
+                            else
+                            {
+                                <td class="text-danger">Silinib</td>
+                            }
                         }
-                        else
-                        {
-                            <td class="text-danger">Silinib</td>
-                        }
-                    }
+                        <td>
+                            <a class="btn btn-warning">Update</a>
+                        </td>
+                        <td>
+                            @{
+                                if (projects.IsDeleted == false)
+                                {
+                                    <form asp-controller="Projects" asp-action="Delete" asp-route-id="@projects.Id" method="post">
+                                        <button class="btn btn-danger">Soft Delete</button>
+                                    </form>
+                                }
+                                else
+                                {
+                                    <form asp-controller="Projects" asp-action="Restore" asp-route-id="@projects.Id" method="post">
+                                        <button class="btn btn-success">Restore</button>
+                                    </form>
+                                }
+                            }
+                           
+                            
+                        </td>
+
                                            
-                    
                     </tr>
                 }
-        </tbody>
+            </tbody>
+        </table>
     </table>
-</table>
+
+</div>

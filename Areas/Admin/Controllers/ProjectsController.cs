@@ -19,5 +19,49 @@ namespace Admin_Task.Areas.Admin.Controllers
             List<Projects> projects = _db.Projects.ToList();
             return View(projects);
         }
+        public IActionResult Create()
+        {
+            return View();
+        }
+        [HttpPost]
+        public IActionResult Create(Projects projects)
+        {
+            _db.Projects.Add(projects);
+            _db.SaveChanges();
+            return RedirectToAction(nameof(Index));
+        }
+
+
+
+        #region Hard Delete
+        //[HttpPost]
+        //public IActionResult Delete(int id)
+        //{
+        //    Projects projects = _db.Projects.Find(id);
+        //    _db.Projects.Remove(projects);
+        //    _db.SaveChanges();
+        //    return RedirectToAction(nameof(Index));
+        //}
+        #endregion
+
+        // Soft Delete
+        [HttpPost]
+        public IActionResult Delete(int id)
+        {
+            Projects projects = _db.Projects.Find(id);
+            projects.IsDeleted = true;
+            _db.SaveChanges();
+            return RedirectToAction(nameof(Index));
+        }
+
+        // Restore
+        [HttpPost]
+        public IActionResult Restore(int id)
+        {
+            Projects projects = _db.Projects.Find(id);
+            projects.IsDeleted = false;
+            _db.SaveChanges();
+            return RedirectToAction(nameof(Index));
+        }
     }
 }
