@@ -1,24 +1,22 @@
 ﻿@model Projects
 <div>
-    <h1 class="text-primary">Add Project</h1>
-    <form asp-controller="Projects" asp-action="Create" method="post">
+    <h1 class="text-primary">Update Slider</h1>
+    <form asp-controller="Projects" asp-action="Update" method="post">
 
         <div class="mb-3">
             <label for="title" class="form-label">Title</label>
             <input asp-for="@Model.Title" class="form-control" id="title" placeholder="Enter title...">
-            <span class="text-danger" asp-validation-for="@Model.Title"></span>
+            <span asp-validation-for="@Model.Title" class="text-danger"></span>
         </div>
         <div class="mb-3">
             <label for="category" class="form-label">Category</label>
             <input asp-for="@Model.Category" class="form-control" id="category" placeholder="Enter category...">
-            <span class="text-danger" asp-validation-for="@Model.Category"></span>
-
+            <span asp-validation-for="@Model.Category" class="text-danger"></span>
         </div>
         <div class="mb-3">
             <label for="imageUrl" class="form-label">ImageUrl</label>
             <input asp-for="@Model.ImageUrl" class="form-control" id="imageUrl" placeholder="Enter url...">
-            <span class="text-danger" asp-validation-for="@Model.ImageUrl"></span>
-
+            <span asp-validation-for="@Model.ImageUrl" class="text-danger"></span>
         </div>
     
         <button type="submit" class="btn btn-primary">Submit</button>

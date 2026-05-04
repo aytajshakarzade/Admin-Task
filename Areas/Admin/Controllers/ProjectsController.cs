@@ -23,9 +23,11 @@ namespace Admin_Task.Areas.Admin.Controllers
         {
             return View();
         }
+
         [HttpPost]
         public IActionResult Create(Projects projects)
         {
+            if (!ModelState.IsValid) return View();
             _db.Projects.Add(projects);
             _db.SaveChanges();
             return RedirectToAction(nameof(Index));
@@ -60,6 +62,25 @@ namespace Admin_Task.Areas.Admin.Controllers
         {
             Projects projects = _db.Projects.Find(id);
             projects.IsDeleted = false;
+            _db.SaveChanges();
+            return RedirectToAction(nameof(Index));
+        }
+
+        //Update
+        public IActionResult Update(int id)
+        {
+            Projects projects = _db.Projects.Find(id);
+            return View(projects); 
+        }
+
+        [HttpPost]
+        public IActionResult Update(Projects projects)
+        {
+            if(!ModelState.IsValid) return View(projects);
+            Projects oldprojects = _db.Projects.Find(projects.Id);
+            oldprojects.Title = projects.Title;
+            oldprojects.Category = projects.Category;
+            oldprojects.ImageUrl = projects.ImageUrl;
             _db.SaveChanges();
             return RedirectToAction(nameof(Index));
         }
