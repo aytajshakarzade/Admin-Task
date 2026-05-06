@@ -1,0 +1,3441 @@
+<!DOCTYPE html>
+
+<html lang="az">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>SoilMate — Torpağın Səsi, Texnologiyanın Gücü</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=Inter:wght@300;400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"/>
+
+<style>
+        :root {
+            --bg: #f0f7ec;
+            --bg-warm: #f5f0e6;
+            --bg-cool: #e8f5e9;
+            --bg-gray: #f0f7ec;
+            --primary: #16a34a;
+            --primary-light: #22c55e;
+            --primary-glow: rgba(22, 163, 74, 0.15);
+            --secondary: #f59e0b;
+            --secondary-light: #fbbf24;
+            --accent: #0ea5e9;
+            --text: #111827;
+            --text-secondary: #4b5563;
+            --text-muted: #9ca3af;
+            --border: #d1e7cc;
+            --card: #ffffff;
+            --danger: #ef4444;
+            --shadow: 0 4px 6px -1px rgba(0,0,0,0.05), 0 2px 4px -1px rgba(0,0,0,0.03);
+            --shadow-lg: 0 20px 25px -5px rgba(0,0,0,0.08), 0 10px 10px -5px rgba(0,0,0,0.02);
+            --shadow-xl: 0 25px 50px -12px rgba(0,0,0,0.12);
+        }
+
+        [data-theme="dark"] {
+            --bg: #0f1a0f;
+            --bg-warm: #1a1510;
+            --bg-cool: #0f1f0f;
+            --bg-gray: #1a2e1a;
+            --primary: #22c55e;
+            --primary-light: #4ade80;
+            --primary-glow: rgba(34, 197, 94, 0.2);
+            --secondary: #fbbf24;
+            --secondary-light: #fcd34d;
+            --accent: #38bdf8;
+            --text: #f0fdf4;
+            --text-secondary: #a7f3d0;
+            --text-muted: #6b7280;
+            --border: #1f3a1f;
+            --card: #142814;
+            --danger: #f87171;
+            --shadow: 0 4px 6px -1px rgba(0,0,0,0.3), 0 2px 4px -1px rgba(0,0,0,0.2);
+            --shadow-lg: 0 20px 25px -5px rgba(0,0,0,0.4), 0 10px 10px -5px rgba(0,0,0,0.2);
+            --shadow-xl: 0 25px 50px -12px rgba(0,0,0,0.5);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            overflow-x: hidden;
+            line-height: 1.6;
+            transition: background 0.5s ease, color 0.5s ease;
+        }
+
+        h1, h2, h3, .brand { font-family: 'Space Grotesk', sans-serif; }
+
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: var(--bg-gray); }
+        ::-webkit-scrollbar-thumb { background: var(--primary); border-radius: 4px; }
+
+        /* ANIMATED BACKGROUND */
+        .animated-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+            background: linear-gradient(135deg, #f5fbf0 0%, #e8f5e9 25%, #f0f7ec 50%, #f5f0e6 75%, #e8f5e9 100%);
+            background-size: 400% 400%;
+            animation: gradientShift 15s ease infinite;
+        }
+
+        [data-theme="dark"] .animated-bg {
+            background: linear-gradient(135deg, #0a150a 0%, #0f1f0f 25%, #0f1a0f 50%, #1a1510 75%, #0f1f0f 100%);
+            background-size: 400% 400%;
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Floating particles */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        .particle {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            background: rgba(22, 163, 74, 0.15);
+            border-radius: 50%;
+            animation: floatParticle 20s infinite linear;
+        }
+
+        [data-theme="dark"] .particle {
+            background: rgba(34, 197, 94, 0.1);
+        }
+
+        @keyframes floatParticle {
+            0% { transform: translateY(100vh) translateX(0) scale(0); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translateY(-10vh) translateX(100px) scale(1); opacity: 0; }
+        }
+
+        /* FLOATING NAVBAR */
+        .nav-wrapper {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 92%;
+            max-width: 1400px;
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+
+        nav {
+            background: rgba(255, 255, 255, 0.92);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            padding: 0.9rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: var(--shadow-lg);
+            transition: all 0.3s ease;
+        }
+
+        [data-theme="dark"] nav {
+            background: rgba(20, 40, 20, 0.92);
+        }
+
+        .nav-wrapper.scrolled nav {
+            box-shadow: var(--shadow-xl);
+            border-color: rgba(22, 163, 74, 0.2);
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            letter-spacing: -0.5px;
+        }
+
+        .logo i { color: var(--secondary); font-size: 1.3rem; }
+
+        .nav-links {
+            display: flex;
+            gap: 2.5rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.95rem;
+            position: relative;
+            transition: all 0.3s;
+            padding: 0.4rem 0;
+        }
+
+        .nav-links a:hover { color: var(--primary); }
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2.5px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            border-radius: 2px;
+            transition: width 0.3s;
+        }
+        .nav-links a:hover::after { width: 100%; }
+
+        .auth-buttons { display: flex; gap: 0.8rem; }
+
+        .btn {
+            padding: 0.65rem 1.4rem;
+            border: none;
+            border-radius: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: 'Inter', sans-serif;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 1.5px solid var(--border);
+            color: var(--text-secondary);
+        }
+        .btn-outline:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+            background: var(--primary-glow);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            color: white;
+            box-shadow: 0 4px 15px var(--primary-glow);
+        }
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px var(--primary-glow);
+        }
+
+        .btn-secondary {
+            background: linear-gradient(135deg, var(--secondary), var(--secondary-light));
+            color: white;
+            box-shadow: 0 4px 15px rgba(245, 158, 11, 0.2);
+        }
+        .btn-secondary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(245, 158, 11, 0.3);
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, var(--danger), #dc2626);
+            color: white;
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--primary);
+            font-size: 1.4rem;
+            cursor: pointer;
+        }
+
+        /* PAGE SYSTEM */
+        .page {
+            display: none;
+            min-height: 100vh;
+            animation: pageEnter 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .page.active { display: block; }
+
+        @keyframes pageEnter {
+            from { opacity: 0; transform: translateY(20px) scale(0.98); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        /* HERO */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            padding: 8rem 5% 4rem;
+            overflow: hidden;
+        }
+
+        .hero-inner {
+            max-width: 1200px;
+            width: 100%;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 50px;
+            color: var(--primary);
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            box-shadow: var(--shadow);
+            width: fit-content;
+        }
+
+        .hero h1 {
+            font-size: 4rem;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+            color: var(--text);
+            letter-spacing: -2px;
+        }
+
+        .hero h1 span {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero p {
+            font-size: 1.15rem;
+            color: var(--text-secondary);
+            margin-bottom: 2.5rem;
+            max-width: 500px;
+            line-height: 1.7;
+        }
+
+        .hero-buttons { display: flex; gap: 1rem; flex-wrap: wrap; }
+
+        .hero-visual {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .hero-card {
+            background: var(--card);
+            border-radius: 32px;
+            padding: 2.5rem;
+            box-shadow: var(--shadow-xl);
+            border: 1px solid var(--border);
+            max-width: 380px;
+            transform: rotate(3deg);
+            transition: transform 0.3s;
+        }
+        .hero-card:hover { transform: rotate(0deg) translateY(-5px); }
+
+        .hero-card-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .hero-card-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.3rem;
+        }
+
+        .stat-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.8rem 0;
+            border-bottom: 1px solid var(--border);
+        }
+        .stat-row:last-child { border-bottom: none; }
+        .stat-label { color: var(--text-muted); font-size: 0.9rem; }
+        .stat-value { font-weight: 700; color: var(--text); }
+        .stat-value.good { color: var(--primary); }
+        .stat-value.warn { color: var(--secondary); }
+
+        /* SECTIONS */
+        .section {
+            padding: 6rem 5%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .section-header h2 {
+            font-size: 2.8rem;
+            margin-bottom: 1rem;
+            color: var(--text);
+            letter-spacing: -1px;
+        }
+
+        .section-header p {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .tag {
+            display: inline-block;
+            padding: 0.35rem 1rem;
+            background: var(--primary-glow);
+            color: var(--primary);
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        /* PROBLEM */
+        .problem-section { background: transparent; }
+
+        .problem-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.5rem;
+        }
+
+        .problem-card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            padding: 2rem;
+            text-align: center;
+            transition: all 0.3s;
+            box-shadow: var(--shadow);
+        }
+
+        .problem-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+            border-color: var(--primary);
+        }
+
+        .problem-card .icon-wrap {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #fee2e2, #fecaca);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.2rem;
+            color: var(--danger);
+            font-size: 1.5rem;
+        }
+
+        .problem-card h4 { margin-bottom: 0.5rem; font-size: 1.1rem; }
+        .problem-card p { color: var(--text-secondary); font-size: 0.9rem; line-height: 1.6; }
+
+        /* SOLUTION */
+        .solution-section { background: transparent; }
+
+        .solution-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .solution-img {
+            background: linear-gradient(135deg, var(--bg-cool), var(--bg-warm));
+            border-radius: 32px;
+            min-height: 450px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid var(--border);
+        }
+
+        .solution-img i {
+            font-size: 8rem;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            opacity: 0.8;
+        }
+
+        .solution-content h3 {
+            font-size: 2.2rem;
+            margin-bottom: 1.5rem;
+            line-height: 1.2;
+        }
+
+        .solution-list { list-style: none; }
+        .solution-list li {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            align-items: flex-start;
+        }
+        .solution-list .check {
+            width: 28px;
+            height: 28px;
+            min-width: 28px;
+            background: var(--primary-glow);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary);
+            font-size: 0.8rem;
+            margin-top: 2px;
+        }
+        .solution-list h4 { margin-bottom: 0.2rem; font-size: 1.1rem; }
+        .solution-list p { color: var(--text-secondary); font-size: 0.95rem; line-height: 1.5; }
+
+        .solution-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+        .sol-stat {
+            background: var(--card);
+            padding: 1.2rem;
+            border-radius: 20px;
+            text-align: center;
+            border: 1px solid var(--border);
+        }
+        .sol-stat h4 { font-size: 1.8rem; color: var(--primary); font-family: 'Space Grotesk'; }
+        .sol-stat p { font-size: 0.85rem; color: var(--text-secondary); margin-top: 0.3rem; }
+
+        /* ROBOT */
+        .robot-section { background: transparent; }
+
+        .robot-showcase {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 40px;
+            overflow: hidden;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            box-shadow: var(--shadow-xl);
+        }
+
+        .robot-visual-area {
+            background: linear-gradient(135deg, #ecfdf5 0%, #fffbeb 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 3rem;
+            position: relative;
+            min-height: 500px;
+        }
+
+        [data-theme="dark"] .robot-visual-area {
+            background: linear-gradient(135deg, #0f2f1f 0%, #1f1f0f 100%);
+        }
+
+        .robot-visual-area .badge {
+            position: absolute;
+            top: 2rem;
+            left: 2rem;
+            background: var(--card);
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--primary);
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border);
+        }
+
+        .robot-visual-area i.main-icon {
+            font-size: 10rem;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0 10px 30px var(--primary-glow));
+            animation: float 4s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
+        }
+
+        .robot-info-area {
+            padding: 3.5rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .robot-info-area h3 {
+            font-size: 2.4rem;
+            margin-bottom: 0.5rem;
+            letter-spacing: -1px;
+        }
+
+        .robot-model {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            color: white;
+            padding: 0.4rem 1rem;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            margin-bottom: 1.5rem;
+            width: fit-content;
+        }
+
+        .robot-info-area > p { color: var(--text-secondary); margin-bottom: 2rem; line-height: 1.7; }
+
+        .specs-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.8rem;
+            margin-bottom: 2rem;
+        }
+
+        .spec-item {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            padding: 0.9rem;
+            background: var(--bg-gray);
+            border-radius: 14px;
+            font-size: 0.9rem;
+            border: 1px solid var(--border);
+            transition: all 0.2s;
+        }
+        .spec-item:hover { border-color: var(--primary); background: var(--bg-cool); }
+        .spec-item i { color: var(--primary); width: 20px; }
+
+        /* PRICING */
+        .pricing-section { background: transparent; }
+
+        .pricing-tabs {
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-bottom: 3rem;
+            background: var(--card);
+            padding: 0.4rem;
+            border-radius: 16px;
+            width: fit-content;
+            margin-left: auto;
+            margin-right: auto;
+            border: 1px solid var(--border);
+        }
+
+        .tab-btn {
+            padding: 0.7rem 1.5rem;
+            background: transparent;
+            border: none;
+            color: var(--text-secondary);
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.95rem;
+            transition: all 0.3s;
+            font-family: 'Inter';
+        }
+        .tab-btn.active {
+            background: var(--primary);
+            color: white;
+            box-shadow: var(--shadow);
+        }
+
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .pricing-card {
+            background: var(--card);
+            border: 2px solid var(--border);
+            border-radius: 28px;
+            padding: 2.5rem 2rem;
+            text-align: center;
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        .pricing-card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-xl);
+            border-color: transparent;
+        }
+
+        .pricing-card.featured {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px var(--primary-glow);
+        }
+
+        .pricing-card.featured::before {
+            content: 'ƏN POPULYAR';
+            position: absolute;
+            top: -12px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            color: white;
+            padding: 0.3rem 1.2rem;
+            border-radius: 50px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+
+        .pricing-icon {
+            width: 60px;
+            height: 60px;
+            background: var(--bg-cool);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.2rem;
+            color: var(--primary);
+            font-size: 1.5rem;
+        }
+
+        .pricing-card h3 { font-size: 1.3rem; margin-bottom: 0.3rem; }
+        .pricing-card > p { color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1.5rem; }
+
+        .price {
+            font-size: 3rem;
+            font-family: 'Space Grotesk', sans-serif;
+            color: var(--text);
+            margin: 1rem 0;
+            font-weight: 700;
+        }
+        .price span { font-size: 1rem; color: var(--text-muted); font-family: 'Inter'; font-weight: 500; }
+
+        .features { list-style: none; text-align: left; margin: 2rem 0; }
+        .features li {
+            padding: 0.6rem 0;
+            display: flex;
+            align-items: center;
+            gap: 0.7rem;
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+        }
+        .features li i { color: var(--primary); font-size: 0.9rem; }
+        .features li i.fa-times { color: var(--text-muted); }
+
+        /* CONTACT */
+        .contact-section { background: transparent; }
+
+        .contact-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .contact-info h3 { font-size: 2rem; margin-bottom: 1rem; }
+        .contact-info > p { color: var(--text-secondary); margin-bottom: 2rem; line-height: 1.7; }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            padding: 1.2rem;
+            background: var(--card);
+            border-radius: 18px;
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow);
+            transition: all 0.3s;
+        }
+        .contact-item:hover { transform: translateX(5px); border-color: var(--primary); }
+
+        .contact-item i {
+            width: 45px;
+            height: 45px;
+            background: var(--bg-cool);
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary);
+            font-size: 1.1rem;
+        }
+
+        .contact-form-wrap {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 28px;
+            padding: 2.5rem;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .form-group { margin-bottom: 1.3rem; }
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 0.9rem 1rem;
+            background: var(--bg-gray);
+            border: 1.5px solid var(--border);
+            border-radius: 14px;
+            color: var(--text);
+            font-family: 'Inter', sans-serif;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: var(--primary);
+            background: var(--card);
+            box-shadow: 0 0 0 4px var(--primary-glow);
+        }
+
+        /* LOGIN PAGE - FIXED CENTERED */
+        /* LOGIN PAGE - PREMIUM COMPLEX DESIGN */
+        .login-page {
+            min-height: 100vh;
+            padding-top: 120px;
+            padding-bottom: 4rem;
+            position: relative;
+            overflow: hidden;
+            background: linear-gradient(135deg, var(--bg-cool) 0%, var(--bg-warm) 50%, var(--bg) 100%);
+        }
+
+        .login-page::before {
+            content: '';
+            position: absolute;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, var(--primary-glow) 0%, transparent 70%);
+            top: -200px;
+            right: -200px;
+            border-radius: 50%;
+            animation: pulse 8s ease-in-out infinite;
+        }
+
+        .login-page::after {
+            content: '';
+            position: absolute;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(245, 158, 11, 0.08) 0%, transparent 70%);
+            bottom: -100px;
+            left: -100px;
+            border-radius: 50%;
+            animation: pulse 10s ease-in-out infinite reverse;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 0.5; }
+            50% { transform: scale(1.2); opacity: 0.8; }
+        }
+
+        .login-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+            position: relative;
+            z-index: 2;
+        }
+
+        .login-left {
+            padding: 2rem 0;
+        }
+
+        .login-left .logo-icon-large {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            border-radius: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 2.5rem;
+            box-shadow: 0 15px 40px var(--primary-glow);
+            margin-bottom: 2rem;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .login-left h1 {
+            font-size: 3.2rem;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+            letter-spacing: -2px;
+        }
+
+        .login-left h1 span {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .login-left p {
+            font-size: 1.15rem;
+            color: var(--text-secondary);
+            line-height: 1.8;
+            margin-bottom: 2.5rem;
+        }
+
+        .login-features {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .login-feature-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem 1.2rem;
+            background: rgba(255,255,255,0.5);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s;
+        }
+
+        .login-feature-item:hover {
+            transform: translateX(5px);
+            border-color: var(--primary);
+            box-shadow: var(--shadow);
+        }
+
+        .login-feature-item i {
+            width: 40px;
+            height: 40px;
+            background: var(--bg-cool);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary);
+            font-size: 1.1rem;
+        }
+
+        .login-feature-item div {
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+
+        .login-feature-item div span {
+            display: block;
+            font-weight: 400;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-top: 0.2rem;
+        }
+
+        .login-box-wrap {
+            position: relative;
+        }
+
+        .login-box-wrap::before {
+            content: '';
+            position: absolute;
+            inset: -2px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary), var(--accent));
+            border-radius: 34px;
+            z-index: -1;
+            opacity: 0.3;
+            filter: blur(20px);
+            animation: glowRotate 8s linear infinite;
+        }
+
+        @keyframes glowRotate {
+            0% { filter: blur(20px) hue-rotate(0deg); }
+            100% { filter: blur(20px) hue-rotate(360deg); }
+        }
+
+        .login-box {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 32px;
+            padding: 3rem;
+            box-shadow: var(--shadow-xl);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .login-box::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary), var(--accent));
+        }
+
+        .login-box-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .login-box .logo-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem;
+            color: white;
+            font-size: 1.8rem;
+            box-shadow: 0 10px 30px var(--primary-glow);
+        }
+
+        .login-box h2 { font-size: 1.6rem; margin-bottom: 0.3rem; }
+        .login-box > p { color: var(--text-secondary); font-size: 0.95rem; margin-bottom: 0; }
+
+        .login-divider {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin: 1.5rem 0;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+        }
+
+        .login-divider::before,
+        .login-divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: var(--border);
+        }
+
+        .login-box input {
+            width: 100%;
+            padding: 1rem 1.2rem;
+            background: var(--bg-gray);
+            border: 1.5px solid var(--border);
+            border-radius: 14px;
+            color: var(--text);
+            font-size: 1rem;
+            margin-bottom: 1rem;
+            font-family: 'Inter';
+            transition: all 0.3s;
+        }
+        .login-box input:focus {
+            outline: none;
+            border-color: var(--primary);
+            background: var(--card);
+            box-shadow: 0 0 0 4px var(--primary-glow);
+        }
+
+        .login-box input::placeholder {
+            color: var(--text-muted);
+        }
+
+        .login-options {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            font-size: 0.9rem;
+        }
+
+        .login-remember {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--text-secondary);
+            cursor: pointer;
+        }
+
+        .login-remember input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            accent-color: var(--primary);
+            margin: 0;
+        }
+
+        .login-forgot {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 600;
+            transition: opacity 0.2s;
+        }
+        .login-forgot:hover { opacity: 0.7; }
+
+        .login-box button[type="submit"] {
+            width: 100%;
+            padding: 1rem;
+            justify-content: center;
+            font-size: 1.05rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .login-box button[type="submit"]::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .login-box button[type="submit"]:hover::before {
+            left: 100%;
+        }
+
+        .login-social {
+            display: flex;
+            gap: 0.8rem;
+            margin-top: 1.5rem;
+        }
+
+        .login-social-btn {
+            flex: 1;
+            padding: 0.8rem;
+            background: var(--bg-gray);
+            border: 1.5px solid var(--border);
+            border-radius: 14px;
+            color: var(--text);
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            font-family: 'Inter';
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .login-social-btn:hover {
+            border-color: var(--primary);
+            background: var(--bg-cool);
+            transform: translateY(-2px);
+        }
+
+        .login-footer {
+            margin-top: 2rem;
+            text-align: center;
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+        .login-footer a { 
+            color: var(--primary); 
+            text-decoration: none; 
+            font-weight: 600;
+            transition: opacity 0.2s;
+        }
+        .login-footer a:hover { opacity: 0.7; }
+
+        .login-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 1px solid var(--border);
+        }
+
+        .login-stat {
+            text-align: center;
+        }
+
+        .login-stat h4 {
+            font-size: 1.5rem;
+            color: var(--primary);
+            font-family: 'Space Grotesk';
+            font-weight: 700;
+        }
+
+        .login-stat p {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-top: 0.3rem;
+        }
+
+        @media (max-width: 1024px) {
+            .login-container {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+            .login-left { display: none; }
+        }
+
+        /* DASHBOARD - NO NAVBAR */
+        .dashboard-page { 
+            background: var(--bg-gray); 
+            min-height: 100vh;
+        }
+
+        .dashboard-layout {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        .dash-sidebar {
+            width: 280px;
+            background: var(--card);
+            border-right: 1px solid var(--border);
+            padding: 2rem 1.5rem;
+            display: flex;
+            flex-direction: column;
+            position: fixed;
+            height: 100vh;
+            z-index: 100;
+        }
+
+        .dash-sidebar .logo { margin-bottom: 3rem; font-size: 1.4rem; }
+
+        .dash-nav { list-style: none; flex: 1; }
+        .dash-nav li { margin-bottom: 0.4rem; }
+        .dash-nav a {
+            display: flex;
+            align-items: center;
+            gap: 0.9rem;
+            padding: 0.9rem 1rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            border-radius: 14px;
+            font-weight: 500;
+            font-size: 0.95rem;
+            transition: all 0.2s;
+        }
+        .dash-nav a:hover, .dash-nav a.active {
+            background: var(--bg-cool);
+            color: var(--primary);
+        }
+        .dash-nav a i { width: 22px; text-align: center; }
+
+        .dash-user {
+            margin-top: auto;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--border);
+        }
+        .dash-user-info {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            margin-bottom: 1rem;
+        }
+        .dash-avatar {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+        }
+
+        .dash-main {
+            margin-left: 280px;
+            flex: 1;
+            padding: 2rem;
+        }
+
+        .dash-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        .dash-header h1 { font-size: 1.6rem; }
+        .dash-header h1 span { color: var(--primary); }
+
+        .dash-actions { display: flex; gap: 1rem; align-items: center; }
+
+        .mode-pill {
+            display: flex;
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+        }
+        .mode-pill button {
+            padding: 0.5rem 1rem;
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.85rem;
+            transition: all 0.2s;
+        }
+        .mode-pill button.active {
+            background: var(--primary);
+            color: white;
+        }
+
+        .status-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            background: var(--bg-cool);
+            color: var(--primary);
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+        .status-pill::before {
+            content: '';
+            width: 8px;
+            height: 8px;
+            background: var(--primary);
+            border-radius: 50%;
+            animation: blink 2s infinite;
+        }
+        @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
+
+        .metrics-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.2rem;
+            margin-bottom: 2rem;
+        }
+
+        .metric-box {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 1.5rem;
+            box-shadow: var(--shadow);
+            transition: all 0.3s;
+        }
+        .metric-box:hover { transform: translateY(-3px); box-shadow: var(--shadow-lg); }
+
+        .metric-box h4 {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-muted);
+            margin-bottom: 0.8rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .metric-box h4 i { color: var(--primary); }
+
+        .metric-num {
+            font-size: 1.9rem;
+            font-family: 'Space Grotesk';
+            font-weight: 700;
+            color: var(--text);
+        }
+        .metric-num span { font-size: 0.9rem; color: var(--text-muted); font-family: 'Inter'; font-weight: 500; }
+
+        .metric-bar {
+            margin-top: 0.8rem;
+            height: 6px;
+            background: var(--bg-gray);
+            border-radius: 3px;
+            overflow: hidden;
+        }
+        .metric-bar-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            border-radius: 3px;
+            transition: width 0.5s;
+        }
+
+        .dash-panel {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            padding: 2rem;
+            box-shadow: var(--shadow);
+            margin-bottom: 2rem;
+        }
+        .dash-panel h2 {
+            font-size: 1.2rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.7rem;
+        }
+        .dash-panel h2 i { color: var(--primary); }
+
+        .control-wrap {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+        }
+
+        .cam-box {
+            background: var(--bg-gray);
+            border-radius: 20px;
+            aspect-ratio: 16/9;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px dashed var(--border);
+            position: relative;
+            overflow: hidden;
+        }
+        .cam-box::before {
+            content: 'CANLI YAYIM';
+            position: absolute;
+            top: 1rem;
+            left: 1rem;
+            background: var(--danger);
+            color: white;
+            padding: 0.3rem 0.8rem;
+            border-radius: 6px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            z-index: 2;
+        }
+        .cam-box i { font-size: 3rem; color: var(--text-muted); }
+
+        .ctrl-area { display: flex; flex-direction: column; gap: 1.5rem; }
+
+        .dpad {
+            display: grid;
+            grid-template-columns: repeat(3, 56px);
+            grid-template-rows: repeat(3, 56px);
+            gap: 6px;
+            justify-content: center;
+            margin: 1rem 0;
+        }
+        .dpad button {
+            background: var(--card);
+            border: 2px solid var(--border);
+            border-radius: 16px;
+            color: var(--text);
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .dpad button:hover { background: var(--primary); color: white; border-color: var(--primary); }
+        .dpad button:active { transform: scale(0.92); }
+        .dpad .up { grid-column: 2; grid-row: 1; }
+        .dpad .left { grid-column: 1; grid-row: 2; }
+        .dpad .center {
+            grid-column: 2; grid-row: 2;
+            background: var(--danger);
+            border-color: var(--danger);
+            color: white;
+        }
+        .dpad .center:hover { background: #dc2626; }
+        .dpad .right { grid-column: 3; grid-row: 2; }
+        .dpad .down { grid-column: 2; grid-row: 3; }
+
+        .ctrl-slider { margin-bottom: 1.2rem; }
+        .ctrl-slider label {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+        .ctrl-slider input[type="range"] {
+            width: 100%;
+            height: 6px;
+            border-radius: 3px;
+            background: var(--bg-gray);
+            outline: none;
+            -webkit-appearance: none;
+        }
+        .ctrl-slider input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: var(--primary);
+            cursor: pointer;
+            box-shadow: 0 0 10px var(--primary-glow);
+        }
+
+        .act-btns {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.7rem;
+        }
+        .act-btn {
+            padding: 0.8rem;
+            background: var(--card);
+            border: 1.5px solid var(--border);
+            border-radius: 14px;
+            color: var(--text);
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            font-family: 'Inter';
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+        .act-btn:hover { background: var(--primary); color: white; border-color: var(--primary); }
+        .act-btn.danger { border-color: #fecaca; color: var(--danger); background: #fef2f2; }
+        .act-btn.danger:hover { background: var(--danger); color: white; }
+
+        .dash-section { 
+            display: none; 
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .dash-section.active { 
+            display: block; 
+            opacity: 1;
+            animation: fadeIn 0.4s ease;
+        }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* SETTINGS IN SIDEBAR */
+        .sidebar-settings {
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--border);
+        }
+
+        .sidebar-settings h4 {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-muted);
+            margin-bottom: 0.8rem;
+        }
+
+        .theme-toggle {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            padding: 0.7rem 1rem;
+            background: var(--bg-gray);
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-bottom: 0.5rem;
+        }
+        .theme-toggle:hover {
+            border-color: var(--primary);
+            background: var(--bg-cool);
+        }
+        .theme-toggle i {
+            color: var(--primary);
+            font-size: 1rem;
+        }
+        .theme-toggle span {
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: var(--text-secondary);
+        }
+
+        /* TOAST */
+        .toast {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: var(--card);
+            border: 1px solid var(--border);
+            color: var(--text);
+            padding: 1rem 1.5rem;
+            border-radius: 16px;
+            box-shadow: var(--shadow-xl);
+            transform: translateX(400px);
+            transition: transform 0.3s;
+            z-index: 9999;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 0.7rem;
+        }
+        .toast.show { transform: translateX(0); }
+        .toast i { color: var(--primary); }
+
+        /* FOOTER */
+        footer {
+            background: var(--card);
+            border-top: 1px solid var(--border);
+            padding: 3rem 5%;
+            text-align: center;
+        }
+        footer .logo { justify-content: center; margin-bottom: 1rem; font-size: 1.4rem; }
+        footer p { color: var(--text-muted); font-size: 0.9rem; }
+
+        /* RESPONSIVE */
+        @media (max-width: 1024px) {
+            .hero-inner, .solution-grid, .robot-showcase, .contact-grid, .control-wrap { grid-template-columns: 1fr; }
+            .problem-grid { grid-template-columns: 1fr 1fr; }
+            .dash-sidebar { transform: translateX(-100%); transition: transform 0.3s; }
+            .dash-sidebar.open { transform: translateX(0); }
+            .dash-main { margin-left: 0; }
+        }
+
+        @media (max-width: 768px) {
+            .nav-links, .auth-buttons { display: none; }
+            .mobile-menu-btn { display: block; }
+            .hero h1 { font-size: 2.8rem; }
+            .problem-grid { grid-template-columns: 1fr; }
+            .metrics-row { grid-template-columns: 1fr 1fr; }
+            .login-box { padding: 2rem; }
+        }
+    
+        .lang-switch {
+            display: flex;
+            align-items: center;
+            gap: 0.7rem;
+            margin-left: 0.8rem;
+            padding: 0.35rem 0.45rem;
+            background: linear-gradient(180deg, rgba(255,255,255,0.75), rgba(255,255,255,0.55));
+            border: 1px solid var(--border);
+            border-radius: 999px;
+            box-shadow: var(--shadow);
+            backdrop-filter: blur(14px);
+        }
+        [data-theme="dark"] .lang-switch {
+            background: linear-gradient(180deg, rgba(20,40,20,0.82), rgba(20,40,20,0.62));
+        }
+        .lang-label {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.45rem;
+            padding: 0 0.55rem 0 0.2rem;
+            font-size: 0.78rem;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            white-space: nowrap;
+        }
+        .lang-label i {
+            color: var(--primary);
+            font-size: 0.9rem;
+        }
+        .lang-pills {
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+            background: var(--bg-gray);
+            padding: 0.22rem;
+            border-radius: 999px;
+            border: 1px solid var(--border);
+        }
+        .lang-pill {
+            min-width: 44px;
+            padding: 0.48rem 0.72rem;
+            border: none;
+            border-radius: 999px;
+            background: transparent;
+            color: var(--text-secondary);
+            font-family: 'Inter', sans-serif;
+            font-weight: 700;
+            font-size: 0.8rem;
+            letter-spacing: 0.06em;
+            cursor: pointer;
+            transition: all 0.25s ease;
+        }
+        .lang-pill:hover {
+            color: var(--primary);
+            background: rgba(255,255,255,0.65);
+        }
+        .lang-pill.active {
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            color: white;
+            box-shadow: 0 8px 18px var(--primary-glow);
+        }
+        @media (max-width: 768px) {
+            .lang-switch { display: none; }
+        }
+    </style>
+<base target="_blank"/>
+</head>
+<body>
+<!-- FLOATING NAVBAR -->
+<div class="nav-wrapper" id="navWrapper">
+<nav>
+<a class="logo" href="#" onclick="goPage('home'); return false;">
+<i class="fas fa-leaf"></i>
+                SoilMate
+            </a>
+<ul class="nav-links">
+<li><a href="#" onclick="goPage('about'); return false;">Biz Kimik</a></li>
+<li><a href="#" onclick="goPage('robot'); return false;">Robotlar</a></li>
+<li><a href="#" onclick="goPage('pricing'); return false;">Qiymətlər</a></li>
+<li><a href="#" onclick="goPage('contact'); return false;">Əlaqə</a></li>
+</ul>
+<div class="auth-buttons">
+<button class="btn btn-outline" onclick="goPage('login')">
+<i class="fas fa-sign-in-alt"></i> Daxil ol
+                </button>
+<button class="btn btn-primary" onclick="goPage('login')">
+<i class="fas fa-user-plus"></i> Qeydiyyat
+                </button>
+</div><div class="lang-switch" aria-label="Dil seçimi">
+    <div class="lang-label"><i class="fas fa-language"></i><span>Dil</span></div>
+    <div class="lang-pills">
+        <button type="button" class="lang-pill active" data-lang="az" onclick="setLanguage('az')">AZ</button>
+        <button type="button" class="lang-pill" data-lang="en" onclick="setLanguage('en')">EN</button>
+        <button type="button" class="lang-pill" data-lang="ru" onclick="setLanguage('ru')">RU</button>
+    </div>
+</div>
+<button class="mobile-menu-btn" onclick="toggleMobileMenu()">
+<i class="fas fa-bars"></i>
+</button>
+</nav>
+</div>
+<!-- PAGE: HOME -->
+<div class="page active" id="page-home">
+<section class="hero">
+<div class="hero-inner">
+<div>
+<div class="hero-badge">
+<i class="fas fa-seedling"></i> Kənd Təsərrüfatının Gələcəyi
+                    </div>
+<h1>Torpağın Səsi, <span>Texnologiyanın Gücü</span></h1>
+<p>Bitki xəstəliklərini süni intellekt ilə saniyələr içində aşkar edin, torpağınızın sağlamlığını real vaxtda izləyin və məhsuldarlığınızı 30%-ə qədər artırın.</p>
+<div class="hero-buttons">
+<button class="btn btn-primary" onclick="goPage('robot')">
+<i class="fas fa-robot"></i> Rover-1-i Kəşf Et
+                        </button>
+<button class="btn btn-outline" onclick="goPage('about')">
+<i class="fas fa-play-circle"></i> Necə İşləyir?
+                        </button>
+</div>
+</div>
+<div class="hero-visual">
+<div class="hero-card">
+<div class="hero-card-header">
+<div class="hero-card-icon"><i class="fas fa-leaf"></i></div>
+<div>
+<div style="font-weight:700;">SoilMate OS</div>
+<div style="font-size:0.85rem;color:var(--text-muted);">Canlı Monitorinq</div>
+</div>
+</div>
+<div class="stat-row">
+<span class="stat-label">Torpaq Nəmliyi</span>
+<span class="stat-value good">40.8%</span>
+</div>
+<div class="stat-row">
+<span class="stat-label">pH Səviyyəsi</span>
+<span class="stat-value good">6.85</span>
+</div>
+<div class="stat-row">
+<span class="stat-label">NDVI İndeksi</span>
+<span class="stat-value good">0.583</span>
+</div>
+<div class="stat-row">
+<span class="stat-label">Xəstəlik Riski</span>
+<span class="stat-value warn">Orta (II)</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section class="problem-section" style="padding: 5rem 5%;">
+<div class="section" style="padding:0;">
+<div class="section-header">
+<span class="tag">Problem</span>
+<h2>Ənənəvi Üsullar Niyə Çatışmır?</h2>
+<p>Ənənəvi laboratoriya analizləri ilə üzləşdiyimiz əsas çətinliklər</p>
+</div>
+<div class="problem-grid">
+<div class="problem-card">
+<div class="icon-wrap"><i class="fas fa-hourglass-half"></i></div>
+<h4>Zaman İtkisi</h4>
+<p>Laboratoriya analizlərinin cavabı 7-14 gün çəkir</p>
+</div>
+<div class="problem-card">
+<div class="icon-wrap"><i class="fas fa-coins"></i></div>
+<h4>Yüksək Xərclər</h4>
+<p>Hər nümunə üçün logistika və xidmət xərcləri</p>
+</div>
+<div class="problem-card">
+<div class="icon-wrap"><i class="fas fa-chart-line"></i></div>
+<h4>Qeyri-Dəqiqlik</h4>
+<p>İnsan faktoru və məhdud nümunələrlə tam əhatə yoxdur</p>
+</div>
+<div class="problem-card">
+<div class="icon-wrap"><i class="fas fa-exclamation-triangle"></i></div>
+<h4>Gecikmiş Qərarlar</h4>
+<p>Vaxtında müdaxilə olunmaması məhsuldarlığı 30%-ə qədər azaldır</p>
+</div>
+</div>
+</div>
+</section>
+<section class="solution-section" style="padding: 5rem 5%;">
+<div class="section" style="padding:0;">
+<div class="section-header">
+<span class="tag" style="background: rgba(245,158,11,0.1); color: var(--secondary);">Həllimiz</span>
+<h2>SoilMate Necə İşləyir?</h2>
+<p>4 mərhələdə ağıllı kənd təsərrüfatı həlli</p>
+</div>
+<div class="solution-grid">
+<div class="solution-img">
+<i class="fas fa-microchip"></i>
+</div>
+<div class="solution-content">
+<h3>AI-Driven Torpaq və Bitki Analizi</h3>
+<ul class="solution-list">
+<li>
+<div class="check"><i class="fas fa-check"></i></div>
+<div>
+<h4>Computer Vision</h4>
+<p>Xüsusi təlim edilmiş AI modelləri bitki yarpaqlarındakı xəstəlikləri 95%+ dəqiqliklə müəyyən edir.</p>
+</div>
+</li>
+<li>
+<div class="check"><i class="fas fa-check"></i></div>
+<div>
+<h4>Risk Analizi</h4>
+<p>Xəstəliyin yayılma sürətini və digər bitkilər üçün risk səviyyəsini avtomatik hesablayır.</p>
+</div>
+</li>
+<li>
+<div class="check"><i class="fas fa-check"></i></div>
+<div>
+<h4>Ağıllı Tövsiyə</h4>
+<p>Problemlərə qarşı spesifik müalicə üsulu və lazımi dərman miqdarını təklif edir.</p>
+</div>
+</li>
+<li>
+<div class="check"><i class="fas fa-check"></i></div>
+<div>
+<h4>Robotik Ekosistem</h4>
+<p>Geniş ərazilərin real vaxtda fasiləsiz monitorinqi avtonom rover ilə.</p>
+</div>
+</li>
+</ul>
+<div class="solution-stats">
+<div class="sol-stat"><h4>95%+</h4><p>Dəqiqlik</p></div>
+<div class="sol-stat"><h4>0.8s</h4><p>Analiz Vaxtı</p></div>
+<div class="sol-stat"><h4>247+</h4><p>Xəstəlik</p></div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<footer>
+<a class="logo" href="#" onclick="goPage('home'); return false;">
+<i class="fas fa-leaf"></i> SoilMate
+            </a>
+<p>Torpağın Səsi, Texnologiyanın Gücü © 2026 SoilMate Robotics. Bütün hüquqlar qorunur.</p>
+</footer>
+</div>
+<!-- PAGE: ABOUT -->
+<div class="page" id="page-about">
+<div style="height: 100px;"></div>
+<section class="section">
+<div class="section-header">
+<span class="tag">Haqqımızda</span>
+<h2>Biz Kimik?</h2>
+<p>SoilMate Robotics olaraq missiyamız və dəyərlərimiz</p>
+</div>
+<div style="max-width: 800px; margin: 0 auto; text-align: center;">
+<p style="font-size: 1.15rem; color: var(--text-secondary); line-height: 1.9; margin-bottom: 2rem;">
+                    SoilMate Robotics 2026-cü ildə yaradılmış, süni intellekt və robotika texnologiyalarına fokuslanan bir startupdır. 
+                    Məqsədimiz, Azərbaycan və region fermerlərinin əlinə real vaxtda dəqiq məlumat verən, 
+                    onların məhsuldarlığını artıran və xərclərini azaldan ağıllı kənd təsərrüfatı həlləri yaratmaqdır.
+                </p>
+<div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; margin-top: 3rem;">
+<div style="background: white; border: 1px solid var(--border); border-radius: 24px; padding: 2rem; box-shadow: var(--shadow);">
+<i class="fas fa-bullseye" style="font-size: 2rem; color: var(--primary); margin-bottom: 1rem;"></i>
+<h4 style="margin-bottom: 0.5rem;">Missiyamız</h4>
+<p style="color: var(--text-secondary); font-size: 0.9rem;">Hər fermerə laboratoriya səviyyəsində analiz imkanı yaratmaq</p>
+</div>
+<div style="background: white; border: 1px solid var(--border); border-radius: 24px; padding: 2rem; box-shadow: var(--shadow);">
+<i class="fas fa-eye" style="font-size: 2rem; color: var(--secondary); margin-bottom: 1rem;"></i>
+<h4 style="margin-bottom: 0.5rem;">Vizyonumuz</h4>
+<p style="color: var(--text-secondary); font-size: 0.9rem;">Regionun ən böyük aqrar texnologiya mərkəzinə çevrilmək</p>
+</div>
+<div style="background: white; border: 1px solid var(--border); border-radius: 24px; padding: 2rem; box-shadow: var(--shadow);">
+<i class="fas fa-heart" style="font-size: 2rem; color: var(--danger); margin-bottom: 1rem;"></i>
+<h4 style="margin-bottom: 0.5rem;">Dəyərlərimiz</h4>
+<p style="color: var(--text-secondary); font-size: 0.9rem;">Yenilikçilik, dəqiqlik və fermer dostu yanaşma</p>
+</div>
+</div>
+</div>
+</section>
+<footer>
+<a class="logo" href="#" onclick="goPage('home'); return false;"><i class="fas fa-leaf"></i> SoilMate</a>
+<p>© 2026 SoilMate Robotics</p>
+</footer>
+</div>
+<!-- PAGE: ROBOT -->
+<div class="page" id="page-robot">
+<div style="height: 100px;"></div>
+<section class="robot-section" style="padding: 3rem 5% 5rem;">
+<div class="section" style="padding:0;">
+<div class="section-header">
+<span class="tag">Məhsullar</span>
+<h2>Robotlarımız</h2>
+<p>Hazırda aktiv modelimiz — sahələrdə sizin gözünüz</p>
+</div>
+<div class="robot-showcase">
+<div class="robot-visual-area">
+<span class="badge"><i class="fas fa-solar-panel"></i> Solar Enerji</span>
+<i class="fas fa-tractor main-icon"></i>
+<p style="margin-top: 1.5rem; color: var(--text-muted); font-size: 0.9rem;">SoilMate Rover-1 Render</p>
+</div>
+<div class="robot-info-area">
+<h3>SoilMate Rover-1</h3>
+<span class="robot-model">FIELD CHARGER — UNIT 1</span>
+<p>ESP32 + ADS1115, pH sensoru, rutubət, EC, DS18B20 sensorları, DC Motor x2, L298N, MG996R, HC-SR04, MPU6050, RGB Kamera, MPPT + 12V 7Ah batareya ilə təchiz edilmiş avtonom sahə robotu.</p>
+<div class="specs-grid">
+<div class="spec-item"><i class="fas fa-microchip"></i><span>ESP32 + AI Processor</span></div>
+<div class="spec-item"><i class="fas fa-battery-full"></i><span>12V 7Ah + Solar MPPT</span></div>
+<div class="spec-item"><i class="fas fa-wifi"></i><span>2.4GHz RF/RC + WiFi</span></div>
+<div class="spec-item"><i class="fas fa-camera"></i><span>RGB Kamera + CV</span></div>
+<div class="spec-item"><i class="fas fa-tint"></i><span>pH / Rutubət / EC</span></div>
+<div class="spec-item"><i class="fas fa-thermometer-half"></i><span>DS18B20 Temperatur</span></div>
+<div class="spec-item"><i class="fas fa-ruler"></i><span>HC-SR04 Ultrasonik</span></div>
+<div class="spec-item"><i class="fas fa-compass"></i><span>MPU6050 IMU</span></div>
+</div>
+<button class="btn btn-primary" onclick="goPage('pricing')">
+<i class="fas fa-tag"></i> Qiymətlərə Bax
+                        </button>
+</div>
+</div>
+</div>
+</section>
+<footer>
+<a class="logo" href="#" onclick="goPage('home'); return false;"><i class="fas fa-leaf"></i> SoilMate</a>
+<p>© 2026 SoilMate Robotics</p>
+</footer>
+</div>
+<!-- PAGE: PRICING -->
+<div class="page" id="page-pricing">
+<div style="height: 100px;"></div>
+<section class="pricing-section" style="padding: 3rem 5% 5rem;">
+<div class="section" style="padding:0;">
+<div class="section-header">
+<span class="tag" style="background: rgba(245,158,11,0.1); color: var(--secondary);">Qiymətlər</span>
+<h2>Satış və Qiymətlər</h2>
+<p>Rover-1 və Soil Vision üçün uyğun paketlər</p>
+</div>
+<div class="pricing-tabs">
+<button class="tab-btn active" onclick="switchPricing('hw', this)">Rover-1 (Hardware)</button>
+<button class="tab-btn" onclick="switchPricing('sub', this)">Soil Vision (Abunə)</button>
+</div>
+<div id="pricing-hw">
+<div class="pricing-grid">
+<div class="pricing-card">
+<div class="pricing-icon"><i class="fas fa-handshake"></i></div>
+<h3>Kirayə</h3>
+<p>Qısa müddətli sahə monitorinqi</p>
+<div class="price">400 <span>AZN/ay</span></div>
+<ul class="features">
+<li><i class="fas fa-check"></i> Tam funksional Rover-1</li>
+<li><i class="fas fa-check"></i> SoilMate OS girişi</li>
+<li><i class="fas fa-check"></i> Texniki dəstək</li>
+<li><i class="fas fa-check"></i> Çatdırılma daxil</li>
+<li><i class="fas fa-check"></i> Sığorta daxildir</li>
+</ul>
+<button class="btn btn-outline" onclick="goPage('contact')" style="width:100%">Əlaqə Saxla</button>
+</div>
+<div class="pricing-card">
+<div class="pricing-icon"><i class="fas fa-box"></i></div>
+<h3>Basic</h3>
+<p>Yalnız cihaz — kiçik təsərrüfatlar</p>
+<div class="price">1,600 <span>AZN</span></div>
+<ul class="features">
+<li><i class="fas fa-check"></i> SoilMate Rover-1</li>
+<li><i class="fas fa-check"></i> Daxili proqram</li>
+<li><i class="fas fa-check"></i> Məhdud bulud</li>
+<li><i class="fas fa-check"></i> 6 ay zəmanət</li>
+<li><i class="fas fa-times"></i> <span style="opacity:0.5">SoilMate Vision</span></li>
+</ul>
+<button class="btn btn-outline" onclick="goPage('contact')" style="width:100%">Sifariş Et</button>
+</div>
+<div class="pricing-card featured">
+<div class="pricing-icon"><i class="fas fa-star"></i></div>
+<h3>Standard</h3>
+<p>Ən ideal seçim — tam ekosistem</p>
+<div class="price">2,200 <span>AZN</span></div>
+<ul class="features">
+<li><i class="fas fa-check"></i> SoilMate Rover-1</li>
+<li><i class="fas fa-check"></i> 1 illik Vision PULSUZ</li>
+<li><i class="fas fa-check"></i> SoilMate OS Dashboard</li>
+<li><i class="fas fa-check"></i> 1 illik zəmanət</li>
+<li><i class="fas fa-check"></i> Prioritet dəstək</li>
+</ul>
+<button class="btn btn-primary" onclick="goPage('contact')" style="width:100%"><i class="fas fa-shopping-cart"></i> İndi Al</button>
+</div>
+<div class="pricing-card">
+<div class="pricing-icon"><i class="fas fa-crown"></i></div>
+<h3>Premium</h3>
+<p>Böyük aqroparklar üçün</p>
+<div class="price">3,500 <span>AZN</span></div>
+<ul class="features">
+<li><i class="fas fa-check"></i> SoilMate Rover-1</li>
+<li><i class="fas fa-check"></i> 2 illik servis</li>
+<li><i class="fas fa-check"></i> Xüsusi AI analiz</li>
+<li><i class="fas fa-check"></i> 7/24 dəstək</li>
+<li><i class="fas fa-check"></i> Xüsusi proqramlaşdırma</li>
+</ul>
+<button class="btn btn-secondary" onclick="goPage('contact')" style="width:100%"><i class="fas fa-building"></i> Enterprise</button>
+</div>
+</div>
+</div>
+<div id="pricing-sub" style="display:none;">
+<div class="pricing-grid" style="max-width: 900px; margin: 0 auto;">
+<div class="pricing-card">
+<div class="pricing-icon"><i class="fas fa-mobile-alt"></i></div>
+<h3>Aylıq</h3>
+<p>Flexible istifadə</p>
+<div class="price">25 <span>AZN/ay</span></div>
+<ul class="features">
+<li><i class="fas fa-check"></i> 247+ xəstəlik tanıma</li>
+<li><i class="fas fa-check"></i> Anlıq analiz</li>
+<li><i class="fas fa-check"></i> 50 şəkil/ay</li>
+</ul>
+<button class="btn btn-outline" style="width:100%">Abunə Ol</button>
+</div>
+<div class="pricing-card">
+<div class="pricing-icon"><i class="fas fa-calendar-alt"></i></div>
+<h3>6 Aylıq</h3>
+<p>Populyar seçim</p>
+<div class="price">120 <span>AZN</span></div>
+<ul class="features">
+<li><i class="fas fa-check"></i> Hər şey daxil</li>
+<li><i class="fas fa-check"></i> 300 şəkil</li>
+<li><i class="fas fa-check"></i> E-poçt dəstəyi</li>
+</ul>
+<button class="btn btn-outline" style="width:100%">Abunə Ol</button>
+</div>
+<div class="pricing-card featured">
+<div class="pricing-icon"><i class="fas fa-infinity"></i></div>
+<h3>1 İllik</h3>
+<p>Ən sərfəli</p>
+<div class="price">190 <span>AZN/il</span></div>
+<ul class="features">
+<li><i class="fas fa-check"></i> Limitsiz analiz</li>
+<li><i class="fas fa-check"></i> Prioritet dəstək</li>
+<li><i class="fas fa-check"></i> API girişi</li>
+</ul>
+<button class="btn btn-primary" style="width:100%">Abunə Ol</button>
+</div>
+</div>
+</div>
+</div>
+</section>
+<footer>
+<a class="logo" href="#" onclick="goPage('home'); return false;"><i class="fas fa-leaf"></i> SoilMate</a>
+<p>© 2026 SoilMate Robotics</p>
+</footer>
+</div>
+<!-- PAGE: CONTACT -->
+<div class="page" id="page-contact">
+<div style="height: 100px;"></div>
+<section class="contact-section" style="padding: 3rem 5% 5rem;">
+<div class="section" style="padding:0;">
+<div class="section-header">
+<span class="tag">Əlaqə</span>
+<h2>Bizimlə Əlaqə</h2>
+<p>Sualınız var? Komandamız tezliklə cavab verəcək.</p>
+</div>
+<div class="contact-grid">
+<div class="contact-info">
+<h3>Sizinlə Danışaq</h3>
+<p>SoilMate Robotics ilə əlaqə saxlamaq üçün aşağıdakı formu doldurun və ya birbaşa əlaqə vasitələrimizdən istifadə edin.</p>
+<div class="contact-item">
+<i class="fas fa-map-marker-alt"></i>
+<div><strong>Bakı, Azərbaycan</strong><p style="color:var(--text-muted);font-size:0.9rem;">Baş ofis</p></div>
+</div>
+<div class="contact-item">
+<i class="fas fa-phone"></i>
+<div><strong>+994 70 399 59 06</strong><p style="color:var(--text-muted);font-size:0.9rem;">Həftə içi 09:00-18:00</p></div>
+</div>
+<div class="contact-item">
+<i class="fas fa-envelope"></i>
+<div><strong>zenithteam.tech@gmail.com</strong><p style="color:var(--text-muted);font-size:0.9rem;">24/7 email dəstəyi</p></div>
+</div>
+</div>
+<div class="contact-form-wrap">
+<form onsubmit="handleContact(event)">
+<div class="form-group">
+<label>Ad Soyad</label>
+<input placeholder="Adınızı daxil edin" required="" type="text"/>
+</div>
+<div class="form-group">
+<label>Email</label>
+<input placeholder="Email ünvanınız" required="" type="email"/>
+</div>
+<div class="form-group">
+<label>Mövzu</label>
+<select>
+<option>Ümumi məlumat</option>
+<option>Rover-1 sifarişi</option>
+<option>Soil Vision abunəliyi</option>
+<option>Təklif və əməkdaşlıq</option>
+</select>
+</div>
+<div class="form-group">
+<label>Mesaj</label>
+<textarea placeholder="Mesajınızı yazın..." required="" rows="4"></textarea>
+</div>
+<button class="btn btn-primary" style="width:100%; justify-content:center;" type="submit">
+<i class="fas fa-paper-plane"></i> Göndər
+                            </button>
+</form>
+</div>
+</div>
+</div>
+</section>
+<footer>
+<a class="logo" href="#" onclick="goPage('home'); return false;"><i class="fas fa-leaf"></i> SoilMate</a>
+<p>© 2026 SoilMate Robotics</p>
+</footer>
+</div>
+<!-- PAGE: LOGIN -->
+<div class="page login-page" id="page-login">
+<div class="login-container">
+<!-- Left Side - Info -->
+<div class="login-left">
+<div class="logo-icon-large"><i class="fas fa-leaf"></i></div>
+<h1>Torpağın Səsi,<br/><span>Texnologiyanın Gücü</span></h1>
+<p>SoilMate Robotics ilə kənd təsərrüfatınıza nəzarəti əlinizə alın. Süni intellekt, avtonom robotlar və real vaxt analizi ilə məhsuldarlığınızı artırın.</p>
+<div class="login-features">
+<div class="login-feature-item">
+<i class="fas fa-robot"></i>
+<div>
+                            Avtonom Robotlar
+                            <span>24/7 sahə monitorinqi</span>
+</div>
+</div>
+<div class="login-feature-item">
+<i class="fas fa-brain"></i>
+<div>
+                            Süni İntellekt
+                            <span>95%+ dəqiqlik ilə analiz</span>
+</div>
+</div>
+<div class="login-feature-item">
+<i class="fas fa-chart-line"></i>
+<div>
+                            Real Vaxt Məlumat
+                            <span>Anlıq torpaq və bitki sağlamlığı</span>
+</div>
+</div>
+</div>
+<div class="login-stats">
+<div class="login-stat">
+<h4>500+</h4>
+<p>Aktiv Fermer</p>
+</div>
+<div class="login-stat">
+<h4>10k+</h4>
+<p>Hektar Ərazi</p>
+</div>
+<div class="login-stat">
+<h4>30%</h4>
+<p>Məhsul Artımı</p>
+</div>
+</div>
+</div>
+<!-- Right Side - Login Form -->
+<div class="login-box-wrap">
+<div class="login-box">
+<div class="login-box-header">
+<div class="logo-icon"><i class="fas fa-leaf"></i></div>
+<h2>SoilMate OS</h2>
+<p>İdarəetmə Panelinə Giriş</p>
+</div>
+<form onsubmit="handleLogin(event)">
+<input id="loginEmail" placeholder="Email ünvanınız" required="" type="email"/>
+<input id="loginPassword" placeholder="Şifrəniz" required="" type="password"/>
+<div class="login-options">
+<label class="login-remember">
+<input checked="" type="checkbox"/>
+<span>Məni xatırla</span>
+</label>
+<a class="login-forgot" href="#" onclick="showToast('Şifrə yeniləmə tezliklə aktiv ediləcək'); return false;">Şifrəni unutdunuz?</a>
+</div>
+<button class="btn btn-primary" type="submit">
+<i class="fas fa-sign-in-alt"></i> Daxil Ol
+                        </button>
+</form>
+<div class="login-divider">və ya</div>
+<div class="login-social">
+<button class="login-social-btn" onclick="showToast('Google ilə giriş tezliklə aktiv ediləcək')">
+<i class="fab fa-google"></i> Google
+                        </button>
+<button class="login-social-btn" onclick="showToast('Apple ilə giriş tezliklə aktiv ediləcək')">
+<i class="fab fa-apple"></i> Apple
+                        </button>
+</div>
+<div class="login-footer">
+<p>Hesabınız yoxdur? <a href="#" onclick="showToast('Qeydiyyat tezliklə aktiv ediləcək'); return false;">Qeydiyyatdan keçin</a></p>
+<p style="margin-top: 1rem;">
+<a href="#" onclick="goPage('home'); return false;" style="color: var(--text-muted);">
+<i class="fas fa-arrow-left"></i> Ana Səhifəyə Qayıt
+                            </a>
+</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- PAGE: DASHBOARD -->
+<div class="page dashboard-page" id="page-dashboard">
+<div class="dashboard-layout">
+<aside class="dash-sidebar">
+<a class="logo" href="#" onclick="goPage('home'); return false;"><i class="fas fa-leaf"></i> SoilMate</a>
+<ul class="dash-nav">
+<li><a class="active" href="#" onclick="showDash('overview', this); return false;"><i class="fas fa-chart-line"></i> Dashboard</a></li>
+<li><a href="#" onclick="showDash('manual', this); return false;"><i class="fas fa-gamepad"></i> Manual Control</a></li>
+<li><a href="#" onclick="showDash('camera', this); return false;"><i class="fas fa-video"></i> Kamera</a></li>
+<li><a href="#" onclick="showDash('settings', this); return false;"><i class="fas fa-cog"></i> Parametrlər</a></li>
+</ul>
+<div class="dash-user">
+<div class="dash-user-info">
+<div class="dash-avatar">A</div>
+<div>
+<div style="font-weight:600; font-size:0.95rem;">Admin</div>
+<div style="font-size:0.8rem; color:var(--text-muted);">admin@soilmate.az</div>
+</div>
+</div>
+<button class="btn btn-outline" onclick="logout()" style="width:100%; justify-content:center;">
+<i class="fas fa-sign-out-alt"></i> Çıxış
+                    </button>
+</div>
+</aside>
+<main class="dash-main">
+<div class="dash-header">
+<div>
+<h1><span>SoilMate R-01</span> — Wheat Field A</h1>
+<p style="color:var(--text-muted); font-size:0.9rem; margin-top:0.2rem;">Canlı status və idarəetmə paneli</p>
+</div>
+<div class="dash-actions">
+<div class="mode-pill">
+<button id="mAuto" onclick="setMode('Autonomous', this)">Auto</button>
+<button class="active" id="mMan" onclick="setMode('Manual', this)">Manual</button>
+<button id="mStand" onclick="setMode('Standby', this)">Standby</button>
+</div>
+<span class="status-pill">Robot Online</span>
+<span id="clock" style="font-family:'Space Grotesk'; color:var(--primary); font-weight:700;"></span>
+</div>
+</div>
+<!-- Overview -->
+<div class="dash-section active" id="dash-overview">
+<div class="metrics-row">
+<div class="metric-box">
+<h4><i class="fas fa-battery-three-quarters"></i> Batareya</h4>
+<div class="metric-num" id="batVal">72<span>%</span></div>
+<div class="metric-bar"><div class="metric-bar-fill" style="width:72%"></div></div>
+</div>
+<div class="metric-box">
+<h4><i class="fas fa-tachometer-alt"></i> Sürət</h4>
+<div class="metric-num" id="spdVal">0.21<span>m/s</span></div>
+</div>
+<div class="metric-box">
+<h4><i class="fas fa-map"></i> Əhatə</h4>
+<div class="metric-num">68<span>%</span></div>
+<div class="metric-bar"><div class="metric-bar-fill" style="width:68%"></div></div>
+</div>
+<div class="metric-box">
+<h4><i class="fas fa-location-arrow"></i> GPS</h4>
+<div class="metric-num" style="font-size:1.3rem;">40.409<br/><span style="font-size:0.8rem;">49.867</span></div>
+</div>
+<div class="metric-box">
+<h4><i class="fas fa-tint"></i> Nəmlik</h4>
+<div class="metric-num" style="color:var(--primary);">40.8<span>%</span></div>
+</div>
+<div class="metric-box">
+<h4><i class="fas fa-flask"></i> pH</h4>
+<div class="metric-num" style="color:var(--primary);">6.85</div>
+</div>
+<div class="metric-box">
+<h4><i class="fas fa-bolt"></i> EC</h4>
+<div class="metric-num" style="color:var(--secondary);">1.17<span>dS</span></div>
+</div>
+<div class="metric-box">
+<h4><i class="fas fa-leaf"></i> NDVI</h4>
+<div class="metric-num" style="color:var(--primary);">0.583</div>
+</div>
+</div>
+<div class="dash-panel">
+<h2><i class="fas fa-info-circle"></i> Sistem Məlumatları</h2>
+<div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap:1rem;">
+<div style="padding:1rem; background:var(--bg-gray); border-radius:16px; border:1px solid var(--border);">
+<div style="color:var(--text-muted); font-size:0.8rem;">Model</div>
+<div style="font-weight:700; margin-top:0.3rem;">SoilMate Rover-1</div>
+</div>
+<div style="padding:1rem; background:var(--bg-gray); border-radius:16px; border:1px solid var(--border);">
+<div style="color:var(--text-muted); font-size:0.8rem;">Firmware</div>
+<div style="font-weight:700; margin-top:0.3rem;">v2.4.1</div>
+</div>
+<div style="padding:1rem; background:var(--bg-gray); border-radius:16px; border:1px solid var(--border);">
+<div style="color:var(--text-muted); font-size:0.8rem;">Son Yeniləmə</div>
+<div style="font-weight:700; margin-top:0.3rem;">Bugün, 10:30</div>
+</div>
+<div style="padding:1rem; background:var(--bg-gray); border-radius:16px; border:1px solid var(--border);">
+<div style="color:var(--text-muted); font-size:0.8rem;">IP Ünvan</div>
+<div style="font-weight:700; margin-top:0.3rem;">192.168.1.105</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Manual -->
+<div class="dash-section" id="dash-manual">
+<div class="dash-panel">
+<h2><i class="fas fa-gamepad"></i> Manual İdarəetmə</h2>
+<div class="control-wrap">
+<div class="cam-box">
+<i class="fas fa-video"></i>
+</div>
+<div class="ctrl-area">
+<div style="text-align:center;">
+<h4 style="color:var(--text-muted); margin-bottom:1rem; font-size:0.95rem;">Hərəkət Nəzarəti</h4>
+<div class="dpad">
+<button class="up" onmousedown="move('forward')" onmouseup="stop()" ontouchend="stop()" ontouchstart="move('forward')"><i class="fas fa-chevron-up"></i></button>
+<button class="left" onmousedown="move('left')" onmouseup="stop()" ontouchend="stop()" ontouchstart="move('left')"><i class="fas fa-chevron-left"></i></button>
+<button class="center" onclick="eStop()"><i class="fas fa-hand-paper"></i></button>
+<button class="right" onmousedown="move('right')" onmouseup="stop()" ontouchend="stop()" ontouchstart="move('right')"><i class="fas fa-chevron-right"></i></button>
+<button class="down" onmousedown="move('backward')" onmouseup="stop()" ontouchend="stop()" ontouchstart="move('backward')"><i class="fas fa-chevron-down"></i></button>
+</div>
+</div>
+<div>
+<div class="ctrl-slider">
+<label><span>Sürət</span><span id="sDisp">50%</span></label>
+<input max="100" min="0" oninput="updateSpeed(this.value)" type="range" value="50"/>
+</div>
+<div class="ctrl-slider">
+<label><span>Kamera Bucağı</span><span id="cDisp">0°</span></label>
+<input max="90" min="-90" oninput="updateCam(this.value)" type="range" value="0"/>
+</div>
+</div>
+<div class="act-btns">
+<button class="act-btn" onclick="showToast('LED yandırıldı')"><i class="fas fa-lightbulb"></i> İşıq</button>
+<button class="act-btn" onclick="showToast('Səs göndərildi')"><i class="fas fa-volume-up"></i> Səs</button>
+<button class="act-btn danger" onclick="eStop()"><i class="fas fa-exclamation-triangle"></i> E-Stop</button>
+<button class="act-btn" onclick="showToast('Bazaya qayıdılır...')"><i class="fas fa-home"></i> Baza</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Camera -->
+<div class="dash-section" id="dash-camera">
+<div class="dash-panel">
+<h2><i class="fas fa-video"></i> Canlı Kamera Yayımları</h2>
+<div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap:1.5rem;">
+<div class="cam-box" style="aspect-ratio:16/9;">
+<i class="fas fa-video"></i>
+<span style="position:absolute; bottom:1rem; left:1rem; background:rgba(0,0,0,0.7); color:white; padding:0.4rem 1rem; border-radius:8px; font-size:0.85rem;">Ana Kamera (RGB)</span>
+</div>
+<div class="cam-box" style="aspect-ratio:16/9;">
+<i class="fas fa-video"></i>
+<span style="position:absolute; bottom:1rem; left:1rem; background:rgba(0,0,0,0.7); color:white; padding:0.4rem 1rem; border-radius:8px; font-size:0.85rem;">NDVI Kamera</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Settings -->
+<div class="dash-section" id="dash-settings">
+<div class="dash-panel">
+<h2><i class="fas fa-cog"></i> Robot Parametrləri</h2>
+<div style="max-width: 600px;">
+<div class="form-group">
+<label>Robot Adı</label>
+<input type="text" value="SoilMate R-01"/>
+</div>
+<div class="form-group">
+<label>Maksimum Sürət Limiti (m/s)</label>
+<input max="1.0" min="0.1" oninput="this.nextElementSibling.textContent=this.value+' m/s'" step="0.1" type="range" value="0.5"/>
+<div style="text-align:right; color:var(--text-muted); font-size:0.85rem; margin-top:0.3rem;">0.5 m/s</div>
+</div>
+<div class="form-group">
+<label>Təhlükəsizlik Məsafəsi (sm)</label>
+<input max="100" min="10" oninput="this.nextElementSibling.textContent=this.value+' sm'" type="range" value="50"/>
+<div style="text-align:right; color:var(--text-muted); font-size:0.85rem; margin-top:0.3rem;">50 sm</div>
+</div>
+<div style="display:flex; gap:1rem; margin-top:2rem;">
+<button class="btn btn-primary" onclick="showToast('Parametrlər yadda saxlanıldı')"><i class="fas fa-save"></i> Yadda Saxla</button>
+<button class="btn btn-outline" onclick="showToast('Fabrika parametrlərinə qaytarıldı')"><i class="fas fa-undo"></i> Sıfırla</button>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+</div>
+<!-- TOAST -->
+<div class="toast" id="toast"><i class="fas fa-check-circle"></i> <span id="toastMsg"></span></div>
+
+<script>
+        const I18N = {
+  "SoilMate — Torpağın Səsi, Texnologiyanın Gücü": {
+    "en": "SoilMate — The Voice of Soil, The Power of Technology",
+    "ru": "SoilMate — Голос почвы, сила технологий"
+  },
+  "Biz Kimik": {
+    "en": "Who We Are",
+    "ru": "Кто мы"
+  },
+  "Robotlar": {
+    "en": "Robots",
+    "ru": "Роботы"
+  },
+  "Qiymətlər": {
+    "en": "Pricing",
+    "ru": "Цены"
+  },
+  "Əlaqə": {
+    "en": "Contact",
+    "ru": "Контакты"
+  },
+  "Daxil ol": {
+    "en": "Log in",
+    "ru": "Войти"
+  },
+  "Qeydiyyat": {
+    "en": "Sign up",
+    "ru": "Регистрация"
+  },
+  "Kənd Təsərrüfatının Gələcəyi": {
+    "en": "The Future of Agriculture",
+    "ru": "Будущее сельского хозяйства"
+  },
+  "Torpağın Səsi,": {
+    "en": "The Voice of Soil,",
+    "ru": "Голос почвы,"
+  },
+  "Texnologiyanın Gücü": {
+    "en": "The Power of Technology",
+    "ru": "Сила технологий"
+  },
+  "Bitki xəstəliklərini süni intellekt ilə saniyələr içində aşkar edin, torpağınızın sağlamlığını real vaxtda izləyin və məhsuldarlığınızı 30%-ə qədər artırın.": {
+    "en": "Detect plant diseases with AI in seconds, monitor soil health in real time, and increase your yield by up to 30%.",
+    "ru": "Обнаруживайте болезни растений с помощью ИИ за секунды, отслеживайте здоровье почвы в реальном времени и повышайте урожайность до 30%."
+  },
+  "Rover-1-i Kəşf Et": {
+    "en": "Discover Rover-1",
+    "ru": "Открыть Rover-1"
+  },
+  "Necə İşləyir?": {
+    "en": "How It Works?",
+    "ru": "Как это работает?"
+  },
+  "Canlı Monitorinq": {
+    "en": "Live Monitoring",
+    "ru": "Живой мониторинг"
+  },
+  "Torpaq Nəmliyi": {
+    "en": "Soil Moisture",
+    "ru": "Влажность почвы"
+  },
+  "pH Səviyyəsi": {
+    "en": "pH Level",
+    "ru": "Уровень pH"
+  },
+  "NDVI İndeksi": {
+    "en": "NDVI Index",
+    "ru": "Индекс NDVI"
+  },
+  "Xəstəlik Riski": {
+    "en": "Disease Risk",
+    "ru": "Риск заболевания"
+  },
+  "Orta (II)": {
+    "en": "Medium (II)",
+    "ru": "Средний (II)"
+  },
+  "Problem": {
+    "en": "Problem",
+    "ru": "Проблема"
+  },
+  "Ənənəvi Üsullar Niyə Çatışmır?": {
+    "en": "Why Do Traditional Methods Fall Short?",
+    "ru": "Почему традиционные методы не справляются?"
+  },
+  "Ənənəvi laboratoriya analizləri ilə üzləşdiyimiz əsas çətinliklər": {
+    "en": "Main challenges we face with traditional laboratory analyses",
+    "ru": "Основные трудности, с которыми мы сталкиваемся при традиционном лабораторном анализе"
+  },
+  "Zaman İtkisi": {
+    "en": "Time Loss",
+    "ru": "Потеря времени"
+  },
+  "Laboratoriya analizlərinin cavabı 7-14 gün çəkir": {
+    "en": "Laboratory results take 7–14 days",
+    "ru": "Результаты лабораторных анализов занимают 7–14 дней"
+  },
+  "Yüksək Xərclər": {
+    "en": "High Costs",
+    "ru": "Высокие затраты"
+  },
+  "Hər nümunə üçün logistika və xidmət xərcləri": {
+    "en": "Logistics and service costs for every sample",
+    "ru": "Логистика и сервисные расходы для каждого образца"
+  },
+  "Qeyri-Dəqiqlik": {
+    "en": "Inaccuracy",
+    "ru": "Неточность"
+  },
+  "İnsan faktoru və məhdud nümunələrlə tam əhatə yoxdur": {
+    "en": "Human error and limited samples do not provide full coverage",
+    "ru": "Человеческий фактор и ограниченное число образцов не дают полного охвата"
+  },
+  "Gecikmiş Qərarlar": {
+    "en": "Delayed Decisions",
+    "ru": "Запоздалые решения"
+  },
+  "Vaxtında müdaxilə olunmaması məhsuldarlığı 30%-ə qədər azaldır": {
+    "en": "Lack of timely intervention reduces yield by up to 30%",
+    "ru": "Отсутствие своевременного вмешательства снижает урожайность до 30%"
+  },
+  "Həllimiz": {
+    "en": "Our Solution",
+    "ru": "Наше решение"
+  },
+  "SoilMate Necə İşləyir?": {
+    "en": "How Does SoilMate Work?",
+    "ru": "Как работает SoilMate?"
+  },
+  "4 mərhələdə ağıllı kənd təsərrüfatı həlli": {
+    "en": "An intelligent agriculture solution in 4 stages",
+    "ru": "Умное сельскохозяйственное решение в 4 этапа"
+  },
+  "AI-Driven Torpaq və Bitki Analizi": {
+    "en": "AI-Driven Soil and Plant Analysis",
+    "ru": "Анализ почвы и растений на основе ИИ"
+  },
+  "Computer Vision": {
+    "en": "Computer Vision",
+    "ru": "Компьютерное зрение"
+  },
+  "Xüsusi təlim edilmiş AI modelləri bitki yarpaqlarındakı xəstəlikləri 95%+ dəqiqliklə müəyyən edir.": {
+    "en": "Specially trained AI models identify diseases on plant leaves with 95%+ accuracy.",
+    "ru": "Специально обученные модели ИИ определяют болезни на листьях растений с точностью 95%+."
+  },
+  "Risk Analizi": {
+    "en": "Risk Analysis",
+    "ru": "Анализ риска"
+  },
+  "Xəstəliyin yayılma sürətini və digər bitkilər üçün risk səviyyəsini avtomatik hesablayır.": {
+    "en": "Automatically calculates the spread rate of the disease and the risk level for other plants.",
+    "ru": "Автоматически рассчитывает скорость распространения болезни и уровень риска для других растений."
+  },
+  "Ağıllı Tövsiyə": {
+    "en": "Smart Recommendation",
+    "ru": "Умная рекомендация"
+  },
+  "Problemlərə qarşı spesifik müalicə üsulu və lazımi dərman miqdarını təklif edir.": {
+    "en": "Suggests a specific treatment method and the required amount of medicine.",
+    "ru": "Предлагает конкретный метод лечения и нужное количество препаратов."
+  },
+  "Robotik Ekosistem": {
+    "en": "Robotic Ecosystem",
+    "ru": "Роботизированная экосистема"
+  },
+  "Geniş ərazilərin real vaxtda fasiləsiz monitorinqi avtonom rover ilə.": {
+    "en": "Continuous real-time monitoring of large areas with an autonomous rover.",
+    "ru": "Непрерывный мониторинг больших территорий в реальном времени с помощью автономного ровера."
+  },
+  "Dəqiqlik": {
+    "en": "Accuracy",
+    "ru": "Точность"
+  },
+  "Analiz Vaxtı": {
+    "en": "Analysis Time",
+    "ru": "Время анализа"
+  },
+  "Xəstəlik": {
+    "en": "Diseases",
+    "ru": "Болезни"
+  },
+  "Torpağın Səsi, Texnologiyanın Gücü © 2026 SoilMate Robotics. Bütün hüquqlar qorunur.": {
+    "en": "The Voice of Soil, The Power of Technology © 2026 SoilMate Robotics. All rights reserved.",
+    "ru": "Голос почвы, сила технологий © 2026 SoilMate Robotics. Все права защищены."
+  },
+  "Haqqımızda": {
+    "en": "About Us",
+    "ru": "О нас"
+  },
+  "SoilMate Robotics olaraq missiyamız və dəyərlərimiz": {
+    "en": "Our mission and values at SoilMate Robotics",
+    "ru": "Наша миссия и ценности SoilMate Robotics"
+  },
+  "SoilMate Robotics 2026-cü ildə yaradılmış, süni intellekt və robotika texnologiyalarına fokuslanan bir startupdır. Məqsədimiz, Azərbaycan və region fermerlərinin əlinə real vaxtda dəqiq məlumat verən, onların məhsuldarlığını artıran və xərclərini azaldan ağıllı kənd təsərrüfatı həlləri yaratmaqdır.": {
+    "en": "SoilMate Robotics is a startup founded in 2026, focused on artificial intelligence and robotics technologies. Our goal is to create smart agricultural solutions that give farmers in Azerbaijan and the region accurate real-time data, increase productivity, and reduce costs.",
+    "ru": "SoilMate Robotics — стартап, основанный в 2026 году и ориентированный на технологии искусственного интеллекта и робототехники. Наша цель — создавать умные аграрные решения, которые дают фермерам Азербайджана и региона точные данные в реальном времени, повышают урожайность и снижают затраты."
+  },
+  "Missiyamız": {
+    "en": "Our Mission",
+    "ru": "Наша миссия"
+  },
+  "Hər fermerə laboratoriya səviyyəsində analiz imkanı yaratmaq": {
+    "en": "Give every farmer access to laboratory-level analysis",
+    "ru": "Дать каждому фермеру возможность получать анализ уровня лаборатории"
+  },
+  "Vizyonumuz": {
+    "en": "Our Vision",
+    "ru": "Наше видение"
+  },
+  "Regionun ən böyük aqrar texnologiya mərkəzinə çevrilmək": {
+    "en": "Become the region’s largest agri-tech center",
+    "ru": "Стать крупнейшим агротехнологическим центром региона"
+  },
+  "Dəyərlərimiz": {
+    "en": "Our Values",
+    "ru": "Наши ценности"
+  },
+  "Yenilikçilik, dəqiqlik və fermer dostu yanaşma": {
+    "en": "Innovation, precision, and a farmer-friendly approach",
+    "ru": "Инновации, точность и дружелюбный подход к фермеру"
+  },
+  "© 2026 SoilMate Robotics": {
+    "en": "© 2026 SoilMate Robotics",
+    "ru": "© 2026 SoilMate Robotics"
+  },
+  "Məhsullar": {
+    "en": "Products",
+    "ru": "Продукты"
+  },
+  "Robotlarımız": {
+    "en": "Our Robots",
+    "ru": "Наши роботы"
+  },
+  "Hazırda aktiv modelimiz — sahələrdə sizin gözünüz": {
+    "en": "Our current active model — your eyes in the fields",
+    "ru": "Наша текущая активная модель — ваши глаза в полях"
+  },
+  "Solar Enerji": {
+    "en": "Solar Power",
+    "ru": "Солнечная энергия"
+  },
+  "SoilMate Rover-1 Render": {
+    "en": "SoilMate Rover-1 Render",
+    "ru": "Рендер SoilMate Rover-1"
+  },
+  "SoilMate Rover-1": {
+    "en": "SoilMate Rover-1",
+    "ru": "SoilMate Rover-1"
+  },
+  "FIELD CHARGER — UNIT 1": {
+    "en": "FIELD CHARGER — UNIT 1",
+    "ru": "FIELD CHARGER — UNIT 1"
+  },
+  "ESP32 + ADS1115, pH sensoru, rutubət, EC, DS18B20 sensorları, DC Motor x2, L298N, MG996R, HC-SR04, MPU6050, RGB Kamera, MPPT + 12V 7Ah batareya ilə təchiz edilmiş avtonom sahə robotu.": {
+    "en": "An autonomous field robot equipped with ESP32 + ADS1115, pH sensor, moisture, EC, DS18B20 sensors, 2 DC motors, L298N, MG996R, HC-SR04, MPU6050, RGB camera, and MPPT + 12V 7Ah battery.",
+    "ru": "Автономный полевой робот, оснащённый ESP32 + ADS1115, датчиком pH, влажности, EC, датчиками DS18B20, 2 DC-моторами, L298N, MG996R, HC-SR04, MPU6050, RGB-камерой и MPPT + аккумулятором 12V 7Ah."
+  },
+  "ESP32 + AI Processor": {
+    "en": "ESP32 + AI Processor",
+    "ru": "ESP32 + ИИ-процессор"
+  },
+  "12V 7Ah + Solar MPPT": {
+    "en": "12V 7Ah + Solar MPPT",
+    "ru": "12V 7Ah + солнечный MPPT"
+  },
+  "2.4GHz RF/RC + WiFi": {
+    "en": "2.4GHz RF/RC + Wi‑Fi",
+    "ru": "2.4GHz RF/RC + Wi‑Fi"
+  },
+  "RGB Kamera + CV": {
+    "en": "RGB Camera + CV",
+    "ru": "RGB-камера + CV"
+  },
+  "pH / Rutubət / EC": {
+    "en": "pH / Moisture / EC",
+    "ru": "pH / влажность / EC"
+  },
+  "DS18B20 Temperatur": {
+    "en": "DS18B20 Temperature",
+    "ru": "Температура DS18B20"
+  },
+  "HC-SR04 Ultrasonik": {
+    "en": "HC-SR04 Ultrasonic",
+    "ru": "Ультразвук HC-SR04"
+  },
+  "MPU6050 IMU": {
+    "en": "MPU6050 IMU",
+    "ru": "IMU MPU6050"
+  },
+  "Qiymətlərə Bax": {
+    "en": "View Prices",
+    "ru": "Посмотреть цены"
+  },
+  "Satış və Qiymətlər": {
+    "en": "Sales and Pricing",
+    "ru": "Продажа и цены"
+  },
+  "Rover-1 və Soil Vision üçün uyğun paketlər": {
+    "en": "Packages suited for Rover-1 and Soil Vision",
+    "ru": "Подходящие пакеты для Rover-1 и Soil Vision"
+  },
+  "Rover-1 (Hardware)": {
+    "en": "Rover-1 (Hardware)",
+    "ru": "Rover-1 (аппаратное обеспечение)"
+  },
+  "Soil Vision (Abunə)": {
+    "en": "Soil Vision (Subscription)",
+    "ru": "Soil Vision (подписка)"
+  },
+  "Kirayə": {
+    "en": "Rental",
+    "ru": "Аренда"
+  },
+  "Qısa müddətli sahə monitorinqi": {
+    "en": "Short-term field monitoring",
+    "ru": "Краткосрочный мониторинг поля"
+  },
+  "Tam funksional Rover-1": {
+    "en": "Fully functional Rover-1",
+    "ru": "Полностью функциональный Rover-1"
+  },
+  "SoilMate OS girişi": {
+    "en": "Access to SoilMate OS",
+    "ru": "Доступ к SoilMate OS"
+  },
+  "Texniki dəstək": {
+    "en": "Technical support",
+    "ru": "Техническая поддержка"
+  },
+  "Çatdırılma daxil": {
+    "en": "Delivery included",
+    "ru": "Доставка включена"
+  },
+  "Sığorta daxildir": {
+    "en": "Insurance included",
+    "ru": "Страховка включена"
+  },
+  "Əlaqə Saxla": {
+    "en": "Contact Us",
+    "ru": "Связаться"
+  },
+  "Basic": {
+    "en": "Basic",
+    "ru": "Базовый"
+  },
+  "Yalnız cihaz — kiçik təsərrüfatlar": {
+    "en": "Device only — for small farms",
+    "ru": "Только устройство — для небольших хозяйств"
+  },
+  "Daxili proqram": {
+    "en": "Built-in software",
+    "ru": "Встроенное ПО"
+  },
+  "Məhdud bulud": {
+    "en": "Limited cloud",
+    "ru": "Ограниченное облако"
+  },
+  "6 ay zəmanət": {
+    "en": "6-month warranty",
+    "ru": "6 месяцев гарантии"
+  },
+  "SoilMate Vision": {
+    "en": "SoilMate Vision",
+    "ru": "SoilMate Vision"
+  },
+  "Sifariş Et": {
+    "en": "Order Now",
+    "ru": "Заказать"
+  },
+  "Standard": {
+    "en": "Standard",
+    "ru": "Стандарт"
+  },
+  "Ən ideal seçim — tam ekosistem": {
+    "en": "Best choice — full ecosystem",
+    "ru": "Лучший выбор — полная экосистема"
+  },
+  "1 illik Vision PULSUZ": {
+    "en": "1 year of Vision FREE",
+    "ru": "1 год Vision БЕСПЛАТНО"
+  },
+  "SoilMate OS Dashboard": {
+    "en": "SoilMate OS Dashboard",
+    "ru": "Панель SoilMate OS"
+  },
+  "1 illik zəmanət": {
+    "en": "1-year warranty",
+    "ru": "1 год гарантии"
+  },
+  "Prioritet dəstək": {
+    "en": "Priority support",
+    "ru": "Приоритетная поддержка"
+  },
+  "İndi Al": {
+    "en": "Buy Now",
+    "ru": "Купить сейчас"
+  },
+  "Premium": {
+    "en": "Premium",
+    "ru": "Премиум"
+  },
+  "Böyük aqroparklar üçün": {
+    "en": "For large agroparks",
+    "ru": "Для крупных агропарков"
+  },
+  "2 illik servis": {
+    "en": "2-year service",
+    "ru": "2 года сервиса"
+  },
+  "Xüsusi AI analiz": {
+    "en": "Custom AI analysis",
+    "ru": "Индивидуальный ИИ-анализ"
+  },
+  "7/24 dəstək": {
+    "en": "24/7 support",
+    "ru": "Поддержка 24/7"
+  },
+  "Xüsusi proqramlaşdırma": {
+    "en": "Custom programming",
+    "ru": "Индивидуальная разработка"
+  },
+  "Enterprise": {
+    "en": "Enterprise",
+    "ru": "Enterprise"
+  },
+  "Aylıq": {
+    "en": "Monthly",
+    "ru": "Ежемесячно"
+  },
+  "Flexible istifadə": {
+    "en": "Flexible usage",
+    "ru": "Гибкое использование"
+  },
+  "247+ xəstəlik tanıma": {
+    "en": "247+ disease recognition",
+    "ru": "Распознавание 247+ болезней"
+  },
+  "Anlıq analiz": {
+    "en": "Instant analysis",
+    "ru": "Мгновенный анализ"
+  },
+  "Abunə Ol": {
+    "en": "Subscribe",
+    "ru": "Подписаться"
+  },
+  "6 Aylıq": {
+    "en": "6 Months",
+    "ru": "6 месяцев"
+  },
+  "Populyar seçim": {
+    "en": "Popular choice",
+    "ru": "Популярный выбор"
+  },
+  "Hər şey daxil": {
+    "en": "All inclusive",
+    "ru": "Всё включено"
+  },
+  "E-poçt dəstəyi": {
+    "en": "Email support",
+    "ru": "Поддержка по электронной почте"
+  },
+  "1 İllik": {
+    "en": "1 Year",
+    "ru": "1 год"
+  },
+  "Ən sərfəli": {
+    "en": "Best value",
+    "ru": "Самый выгодный"
+  },
+  "Limitsiz analiz": {
+    "en": "Unlimited analysis",
+    "ru": "Безлимитный анализ"
+  },
+  "API girişi": {
+    "en": "API access",
+    "ru": "Доступ к API"
+  },
+  "Bizimlə Əlaqə": {
+    "en": "Contact Us",
+    "ru": "Связаться с нами"
+  },
+  "Sualınız var? Komandamız tezliklə cavab verəcək.": {
+    "en": "Have a question? Our team will reply soon.",
+    "ru": "Есть вопрос? Наша команда скоро ответит."
+  },
+  "Sizinlə Danışaq": {
+    "en": "Let’s Talk",
+    "ru": "Давайте поговорим"
+  },
+  "SoilMate Robotics ilə əlaqə saxlamaq üçün aşağıdakı formu doldurun və ya birbaşa əlaqə vasitələrimizdən istifadə edin.": {
+    "en": "Fill out the form below to contact SoilMate Robotics, or use our direct contact details.",
+    "ru": "Заполните форму ниже, чтобы связаться с SoilMate Robotics, или используйте наши прямые контакты."
+  },
+  "Bakı, Azərbaycan": {
+    "en": "Baku, Azerbaijan",
+    "ru": "Баку, Азербайджан"
+  },
+  "Baş ofis": {
+    "en": "Head Office",
+    "ru": "Главный офис"
+  },
+  "Həftə içi 09:00-18:00": {
+    "en": "Weekdays 09:00–18:00",
+    "ru": "По будням 09:00–18:00"
+  },
+  "24/7 email dəstəyi": {
+    "en": "24/7 email support",
+    "ru": "Поддержка по электронной почте 24/7"
+  },
+  "Ad Soyad": {
+    "en": "Full Name",
+    "ru": "Имя и фамилия"
+  },
+  "Mövzu": {
+    "en": "Subject",
+    "ru": "Тема"
+  },
+  "Ümumi məlumat": {
+    "en": "General information",
+    "ru": "Общая информация"
+  },
+  "Rover-1 sifarişi": {
+    "en": "Rover-1 order",
+    "ru": "Заказ Rover-1"
+  },
+  "Soil Vision abunəliyi": {
+    "en": "Soil Vision subscription",
+    "ru": "Подписка Soil Vision"
+  },
+  "Təklif və əməkdaşlıq": {
+    "en": "Proposal and partnership",
+    "ru": "Предложение и сотрудничество"
+  },
+  "Mesaj": {
+    "en": "Message",
+    "ru": "Сообщение"
+  },
+  "Göndər": {
+    "en": "Send",
+    "ru": "Отправить"
+  },
+  "SoilMate Robotics ilə kənd təsərrüfatınıza nəzarəti əlinizə alın. Süni intellekt, avtonom robotlar və real vaxt analizi ilə məhsuldarlığınızı artırın.": {
+    "en": "Take control of your agriculture with SoilMate Robotics. Increase productivity with artificial intelligence, autonomous robots, and real-time analytics.",
+    "ru": "Возьмите контроль над своим хозяйством с SoilMate Robotics. Повышайте урожайность с помощью искусственного интеллекта, автономных роботов и аналитики в реальном времени."
+  },
+  "Avtonom Robotlar": {
+    "en": "Autonomous Robots",
+    "ru": "Автономные роботы"
+  },
+  "24/7 sahə monitorinqi": {
+    "en": "24/7 field monitoring",
+    "ru": "Мониторинг поля 24/7"
+  },
+  "Süni İntellekt": {
+    "en": "Artificial Intelligence",
+    "ru": "Искусственный интеллект"
+  },
+  "95%+ dəqiqlik ilə analiz": {
+    "en": "Analysis with 95%+ accuracy",
+    "ru": "Анализ с точностью 95%+"
+  },
+  "Real Vaxt Məlumat": {
+    "en": "Real-Time Data",
+    "ru": "Данные в реальном времени"
+  },
+  "Anlıq torpaq və bitki sağlamlığı": {
+    "en": "Instant soil and plant health",
+    "ru": "Мгновенное состояние почвы и растений"
+  },
+  "Aktiv Fermer": {
+    "en": "Active Farmers",
+    "ru": "Активных фермеров"
+  },
+  "Hektar Ərazi": {
+    "en": "Hectares",
+    "ru": "Гектаров территории"
+  },
+  "Məhsul Artımı": {
+    "en": "Yield Increase",
+    "ru": "Рост урожайности"
+  },
+  "İdarəetmə Panelinə Giriş": {
+    "en": "Log in to the Control Panel",
+    "ru": "Вход в панель управления"
+  },
+  "Məni xatırla": {
+    "en": "Remember me",
+    "ru": "Запомнить меня"
+  },
+  "Şifrəni unutdunuz?": {
+    "en": "Forgot your password?",
+    "ru": "Забыли пароль?"
+  },
+  "Daxil Ol": {
+    "en": "Log In",
+    "ru": "Войти"
+  },
+  "və ya": {
+    "en": "or",
+    "ru": "или"
+  },
+  "Google": {
+    "en": "Google",
+    "ru": "Google"
+  },
+  "Apple": {
+    "en": "Apple",
+    "ru": "Apple"
+  },
+  "Hesabınız yoxdur?": {
+    "en": "Don’t have an account?",
+    "ru": "Нет аккаунта?"
+  },
+  "Qeydiyyatdan keçin": {
+    "en": "Register",
+    "ru": "Зарегистрируйтесь"
+  },
+  "Ana Səhifəyə Qayıt": {
+    "en": "Back to Home",
+    "ru": "Вернуться на главную"
+  },
+  "Dashboard": {
+    "en": "Dashboard",
+    "ru": "Панель управления"
+  },
+  "Manual Control": {
+    "en": "Manual Control",
+    "ru": "Ручное управление"
+  },
+  "Kamera": {
+    "en": "Camera",
+    "ru": "Камера"
+  },
+  "Parametrlər": {
+    "en": "Settings",
+    "ru": "Настройки"
+  },
+  "Admin": {
+    "en": "Admin",
+    "ru": "Администратор"
+  },
+  "Çıxış": {
+    "en": "Logout",
+    "ru": "Выйти"
+  },
+  "SoilMate R-01 — Wheat Field A": {
+    "en": "SoilMate R-01 — Wheat Field A",
+    "ru": "SoilMate R-01 — Пшеничное поле A"
+  },
+  "Canlı status və idarəetmə paneli": {
+    "en": "Live status and control panel",
+    "ru": "Панель живого статуса и управления"
+  },
+  "Auto": {
+    "en": "Auto",
+    "ru": "Авто"
+  },
+  "Manual": {
+    "en": "Manual",
+    "ru": "Ручной"
+  },
+  "Standby": {
+    "en": "Standby",
+    "ru": "Ожидание"
+  },
+  "Robot Online": {
+    "en": "Robot Online",
+    "ru": "Робот онлайн"
+  },
+  "Overview": {
+    "en": "Overview",
+    "ru": "Обзор"
+  },
+  "Batareya": {
+    "en": "Battery",
+    "ru": "Батарея"
+  },
+  "Əhatə": {
+    "en": "Coverage",
+    "ru": "Покрытие"
+  },
+  "GPS": {
+    "en": "GPS",
+    "ru": "GPS"
+  },
+  "Nəmlik": {
+    "en": "Moisture",
+    "ru": "Влажность"
+  },
+  "Sistem Məlumatları": {
+    "en": "System Information",
+    "ru": "Системная информация"
+  },
+  "Model": {
+    "en": "Model",
+    "ru": "Модель"
+  },
+  "Firmware": {
+    "en": "Firmware",
+    "ru": "Прошивка"
+  },
+  "Son Yeniləmə": {
+    "en": "Last Update",
+    "ru": "Последнее обновление"
+  },
+  "Bugün, 10:30": {
+    "en": "Today, 10:30",
+    "ru": "Сегодня, 10:30"
+  },
+  "IP Ünvan": {
+    "en": "IP Address",
+    "ru": "IP-адрес"
+  },
+  "Manual İdarəetmə": {
+    "en": "Manual Control",
+    "ru": "Ручное управление"
+  },
+  "Hərəkət Nəzarəti": {
+    "en": "Movement Control",
+    "ru": "Управление движением"
+  },
+  "Sürət": {
+    "en": "Speed",
+    "ru": "Скорость"
+  },
+  "Kamera Bucağı": {
+    "en": "Camera Angle",
+    "ru": "Угол камеры"
+  },
+  "İşıq": {
+    "en": "Light",
+    "ru": "Свет"
+  },
+  "Səs": {
+    "en": "Sound",
+    "ru": "Звук"
+  },
+  "Baza": {
+    "en": "Base",
+    "ru": "База"
+  },
+  "Canlı Kamera Yayımları": {
+    "en": "Live Camera Feeds",
+    "ru": "Живые видеотрансляции"
+  },
+  "Ana Kamera (RGB)": {
+    "en": "Main Camera (RGB)",
+    "ru": "Основная камера (RGB)"
+  },
+  "NDVI Kamera": {
+    "en": "NDVI Camera",
+    "ru": "NDVI-камера"
+  },
+  "Robot Parametrləri": {
+    "en": "Robot Settings",
+    "ru": "Параметры робота"
+  },
+  "Robot Adı": {
+    "en": "Robot Name",
+    "ru": "Имя робота"
+  },
+  "Maksimum Sürət Limiti (m/s)": {
+    "en": "Maximum Speed Limit (m/s)",
+    "ru": "Максимальный лимит скорости (м/с)"
+  },
+  "Təhlükəsizlik Məsafəsi (sm)": {
+    "en": "Safety Distance (cm)",
+    "ru": "Безопасная дистанция (см)"
+  },
+  "Yadda Saxla": {
+    "en": "Save",
+    "ru": "Сохранить"
+  },
+  "Sıfırla": {
+    "en": "Reset",
+    "ru": "Сбросить"
+  }
+};
+        const LANG_LOCALES = { az: 'az-AZ', en: 'en-US', ru: 'ru-RU' };
+        const LANG_TITLES = {
+            az: 'SoilMate — Torpağın Səsi, Texnologiyanın Gücü',
+            en: 'SoilMate — The Voice of Soil, The Power of Technology',
+            ru: 'SoilMate — Голос почвы, сила технологий'
+        };
+        let CURRENT_LANG = localStorage.getItem('soilmate_lang') || 'az';
+        const BASE_TEXTS = new WeakMap();
+        const BASE_TITLE = document.title;
+
+        function translateText(base, lang) {
+            const item = I18N[base];
+            if (item && item[lang]) return item[lang];
+            return base;
+        }
+
+        function cacheTextNodes() {
+            const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, {
+                acceptNode(node) {
+                    if (!node.parentElement) return NodeFilter.FILTER_REJECT;
+                    const parent = node.parentElement;
+                    if (['SCRIPT', 'STYLE', 'NOSCRIPT'].includes(parent.tagName)) return NodeFilter.FILTER_REJECT;
+                    if (!node.nodeValue || !node.nodeValue.trim()) return NodeFilter.FILTER_REJECT;
+                    return NodeFilter.FILTER_ACCEPT;
+                }
+            });
+            while (walker.nextNode()) {
+                const node = walker.currentNode;
+                if (!BASE_TEXTS.has(node)) {
+                    BASE_TEXTS.set(node, node.nodeValue.trim());
+                }
+            }
+        }
+
+        function updateLanguageSwitcher(lang) {
+            document.querySelectorAll('.lang-pill').forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.lang === lang);
+            });
+        }
+
+        function applyLanguage(lang) {
+            CURRENT_LANG = lang;
+            localStorage.setItem('soilmate_lang', lang);
+            document.documentElement.lang = lang;
+
+            if (document.title) {
+                document.title = translateText(BASE_TITLE, lang);
+            }
+
+            updateLanguageSwitcher(lang);
+
+            document.querySelectorAll('body *').forEach(el => {
+                if (['SCRIPT', 'STYLE', 'NOSCRIPT'].includes(el.tagName)) return;
+                // Skip text inside the language selector itself
+                if (el.closest && el.closest('.lang-switch')) return;
+            });
+
+            const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, {
+                acceptNode(node) {
+                    if (!node.parentElement) return NodeFilter.FILTER_REJECT;
+                    const parent = node.parentElement;
+                    if (['SCRIPT', 'STYLE', 'NOSCRIPT'].includes(parent.tagName)) return NodeFilter.FILTER_REJECT;
+                    if (parent.closest && parent.closest('.lang-switch')) return NodeFilter.FILTER_REJECT;
+                    if (!node.nodeValue || !node.nodeValue.trim()) return NodeFilter.FILTER_REJECT;
+                    return NodeFilter.FILTER_ACCEPT;
+                }
+            });
+
+            while (walker.nextNode()) {
+                const node = walker.currentNode;
+                const base = BASE_TEXTS.get(node) || node.nodeValue.trim();
+                const translated = translateText(base, lang);
+                node.nodeValue = node.nodeValue.replace(node.nodeValue.trim(), translated);
+            }
+        }
+
+        function setLanguage(lang) {
+            cacheTextNodes();
+            applyLanguage(lang);
+        }
+
+        function t(base) {
+            return translateText(base, CURRENT_LANG);
+        }
+
+        // NAVIGATION
+        function goPage(page) {
+            document.querySelectorAll('.page').forEach(p => {
+                p.classList.remove('active');
+                p.style.display = 'none';
+            });
+            const tEl = document.getElementById('page-' + page);
+            if (!tEl) return;
+            tEl.style.display = 'block';
+            setTimeout(() => tEl.classList.add('active'), 10);
+            window.scrollTo(0, 0);
+
+            // Navbar gizlət/göstər
+            const nav = document.getElementById('navWrapper');
+            if (nav) {
+                if (page === 'dashboard') {
+                    nav.style.display = 'none';
+                } else {
+                    nav.style.display = 'block';
+                }
+            }
+
+            if (page === 'dashboard') startClock();
+        }
+
+        // NAVBAR SCROLL
+        window.addEventListener('scroll', () => {
+            const w = document.getElementById('navWrapper');
+            if (!w) return;
+            if (window.scrollY > 30) w.classList.add('scrolled');
+            else w.classList.remove('scrolled');
+        });
+
+        // LOGIN
+        function handleLogin(e) {
+            e.preventDefault();
+            showToast('Giriş uğurlu! Yönləndirilir...');
+            setTimeout(() => goPage('dashboard'), 1200);
+        }
+
+        function logout() {
+            showToast('Çıxış edilir...');
+            setTimeout(() => {
+                const nav = document.getElementById('navWrapper');
+                if (nav) nav.style.display = 'block';
+                goPage('home');
+            }, 800);
+        }
+
+        // CONTACT
+        function handleContact(e) {
+            e.preventDefault();
+            showToast('Mesajınız göndərildi!');
+            e.target.reset();
+        }
+
+        // TOAST
+        function showToast(msg) {
+            const tEl = document.getElementById('toast');
+            document.getElementById('toastMsg').textContent = msg;
+            tEl.classList.add('show');
+            setTimeout(() => tEl.classList.remove('show'), 3000);
+        }
+
+        // PRICING TABS
+        function switchPricing(type, btn) {
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            document.getElementById('pricing-hw').style.display = type === 'hw' ? 'block' : 'none';
+            document.getElementById('pricing-sub').style.display = type === 'sub' ? 'block' : 'none';
+        }
+
+        // DASHBOARD NAV
+        function showDash(sec, el) {
+            document.querySelectorAll('.dash-section').forEach(s => {
+                s.classList.remove('active');
+                s.style.display = 'none';
+            });
+            const tEl = document.getElementById('dash-' + sec);
+            if (tEl) {
+                tEl.style.display = 'block';
+                void tEl.offsetWidth;
+                tEl.classList.add('active');
+            }
+            document.querySelectorAll('.dash-nav a').forEach(a => a.classList.remove('active'));
+            if (el) el.classList.add('active');
+        }
+
+        function setMode(mode, btn) {
+            document.querySelectorAll('.mode-pill button').forEach(b => b.classList.remove('active'));
+            if (btn) btn.classList.add('active');
+            showToast(t('Rejim: ') + mode);
+        }
+
+        // CLOCK
+        function startClock() {
+            const update = () => {
+                const el = document.getElementById('clock');
+                if (el) el.textContent = new Date().toLocaleTimeString(LANG_LOCALES[CURRENT_LANG] || 'az-AZ', { hour:'2-digit', minute:'2-digit', second:'2-digit' });
+            };
+            update();
+            setInterval(update, 1000);
+        }
+
+        // ROBOT CONTROLS
+        function move(dir) {
+            const s = document.querySelector('.ctrl-slider input');
+            const v = s ? s.value : 50;
+            const el = document.getElementById('spdVal');
+            if (el) el.innerHTML = (v * 0.0042).toFixed(2) + '<span>m/s</span>';
+        }
+        function stop() {
+            const el = document.getElementById('spdVal');
+            if (el) el.innerHTML = '0.00<span>m/s</span>';
+        }
+        function eStop() {
+            stop();
+            showToast('🛑 ' + t('TƏCİLİ DAYANMA AKTİVLƏŞDİRİLDİ!'));
+        }
+        function updateSpeed(v) { document.getElementById('sDisp').textContent = v + '%'; }
+        function updateCam(v) { document.getElementById('cDisp').textContent = v + '°'; }
+
+        // KEYBOARD
+        document.addEventListener('keydown', (e) => {
+            if (!document.getElementById('page-dashboard')?.classList.contains('active')) return;
+            if (['ArrowUp','ArrowDown','ArrowLeft','ArrowRight'].includes(e.key)) move(e.key);
+            if (e.key === ' ') eStop();
+        });
+        document.addEventListener('keyup', (e) => {
+            if (['ArrowUp','ArrowDown','ArrowLeft','ArrowRight'].includes(e.key)) stop();
+        });
+
+        // MOBILE MENU
+        function toggleMobileMenu() {
+            showToast(t('Mobil menyu tezliklə əlavə ediləcək'));
+        }
+
+        // INITIALIZE
+        document.addEventListener('DOMContentLoaded', () => {
+            cacheTextNodes();
+            // Translate initial texts
+            applyLanguage(CURRENT_LANG);
+            updateLanguageSwitcher(CURRENT_LANG);
+            if (document.getElementById('page-dashboard')?.classList.contains('active')) {
+                startClock();
+            }
+        });
+    </script>
+
+</body>
+</html>
